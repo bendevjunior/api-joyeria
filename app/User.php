@@ -5,37 +5,41 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Uuid;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable {
+    
+    protected $table = 'users';
     use Notifiable;
+    use SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    
     protected $fillable = [
-        'name', 'email', 'password',
+        'uuid', 'name', 'email', 'password', 'role', 
+        'cpf_cnpj', 'data_nascimento', 'nome_mae',
+        'nome_pai', 'endereco_id'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'endereco_id'
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //run create
+    public static function boot() {
+        parent::boot();
+        self::creating(function ($model) {
+            $model->uuid = (string) Uuid::generate(4);
+        });
+    }
+
+    public static function find_uuid ($uuid) {
+        return User::where('uuid', $uuid)->first();
+    }
 
 
 
@@ -45,8 +49,7 @@ class User extends Authenticatable
 
     /* *** FOR API *** */
 
-    public function getJWTIdentifier()
-    {
+    public function getJWTIdentifier() {
         return $this->getKey();
     }
 
@@ -55,8 +58,7 @@ class User extends Authenticatable
      *
      * @return array
      */
-    public function getJWTCustomClaims()
-    {
+    public function getJWTCustomClaims() {
         return [];
     }
 
@@ -67,8 +69,7 @@ class User extends Authenticatable
      * @param  string  $token
      * @return void
      */
-    public function sendPasswordResetNotification($token)
-    {
+    public function sendPasswordResetNotification($token) {
         $this->notify(new CustomResetPassword($token, $this->email));
     }
 }
