@@ -84,46 +84,25 @@ class authController extends Controller {
      */
     //se user registrado mas empresa bloqueada bloquear acesso
     public function register (Request $request) {
-        //$request->tipo 0=cliente 1= empresa
+        //$role = 1-admin | 2-revendedor | 3 - usuario do e-comerce
+        
         if(User::where('email', $request->email)->get()->count() > 0) {
-            return response()->json(['error' => 'Email ja utilizado'], 204);
+            return response()->json(['error' => 'Email ja utilizado']);
         }
-        if(!is_null($request->ref)) {
-            $user_ref = User::where('cod_ref', $request->ref)->first();
-        } else {
-            $user_ref = null;
+        $endereco = Endereco::create($request->all());
+        $request->merge(['endereco_id'=>$endereco->id]);
+        if($request->password == null) {
+            $request->merge(['passwors'=>rand(3333333, 7777777)]);
         }
-        if($request->tipo == 0) {
-            $user = User::create([
-                'name'      => $request->name,
-                'email'     => $request->email,
-                'password'  => Hash::make($request->password),
-                'convidado_por_id' => !is_null($user_ref) ? $user_ref->id : null
-            ]);
-            $user->cod_ref = rand(33, 77) . $user->id . rand(33, 77);
-            $user->save();
-
-        } else {
-
-            //register empresa
-            $endereco = Endereco::create($request->all());
-            $empresa = Empresa::create([
-                'nome'=>$request->name,
-                'endereco_id' => $endereco->id
-            ]);
-            $user = User::create([
-                'name'      => $request->name,
-                'email'     => $request->email,
-                'password'  => Hash::make($request->password),
-                'role'      => 1
-            ]);
+        $user = User::create($request->all());
+        $user = User::find($user->id);
+        $endereco = $user->endereco;
+        $endereco_cidade = $user->endereco->cidade->nome;
+        $endereco_estado = $user->endereco->estado->nome;
 
 
-        }
-
-        $email = new ConfirmEmailAddress($user->codigo_email_verificacao, $request->email);
-            $a = Mail::to($request->email)->send($email);
-            return response()->json(['success'=>'Usuário cadastro com sucesso, valide o email'], 200);
+        return response()->json(compact('user'));
+        
     }
 
     public function trocar_senha (Request $request) {
