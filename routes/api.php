@@ -16,4 +16,5 @@ Route::group(['middleware' => 'jwt.auth', 'prefix' => 'auth'], function () {
 Route::group(['middleware' => 'jwt.auth', 'prefix' => 'fornecedor'], function () {
     Route::post('store', "API\V1\FornecedorController@store");
     Route::get('show', "API\V1\FornecedorController@show");
+    Route::post('update', "API\V1\FornecedorController@update");
 });

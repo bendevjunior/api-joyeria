@@ -23,8 +23,7 @@ class FornecedorController extends Controller {
         $endereco_cidade = $fornecedor->endereco->cidade->nome;
         $endereco_estado = $fornecedor->endereco->estado->nome;
 
-        return response()->json(compact('fornecedor'));
-        
+        return response()->json(compact('fornecedor')); 
     }
 
     public function show(Request $request) {
@@ -38,6 +37,25 @@ class FornecedorController extends Controller {
             $endereco_estado = $fornecedor->endereco->estado->nome;
         }
         return response()->json(compact('fornecedor'));
+    }
+
+    public function update (Request $request) {
+        //status = 0-desativado | 1-ativado
+        $fornecedor = Fornecedor::find_uuid($request->uuid);  
+        $endereco = Endereco::find($fornecedor->endereco_id);
+        
+        $endereco->update($request->all());
+        $request->merge([
+            'endereco_id'=>$endereco->id,
+            'status' => $request->ativo
+        ]);
+        $fornecedor->update($request->all());
+        $fornecedor = Fornecedor::find($fornecedor->id);
+        $endereco = $fornecedor->endereco;
+        $endereco_cidade = $fornecedor->endereco->cidade->nome;
+        $endereco_estado = $fornecedor->endereco->estado->nome;
+
+        return response()->json(compact('fornecedor')); 
     }
 
 }
