@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Mail\ConfirmEmailAddress;
 use Mail;
+use Carbon\Carbon;
 
 
 use App\User;
@@ -85,14 +86,20 @@ class authController extends Controller {
     //se user registrado mas empresa bloqueada bloquear acesso
     public function register (Request $request) {
         //$role = 1-admin | 2-revendedor | 3 - usuario do e-comerce
+        if(!is_null(auth()->user())) {
+            $request->merge(['email_verified_at' => Carbon::now()->format('Y-m-d')]);
+        }
         
         if(User::where('email', $request->email)->get()->count() > 0) {
             return response()->json(['error' => 'Email ja utilizado']);
         }
         $endereco = Endereco::create($request->all());
         $request->merge(['endereco_id'=>$endereco->id]);
+        $pass_generate = rand(3333333, 7777777);
         if($request->password == null) {
-            $request->merge(['passwors'=>rand(3333333, 7777777)]);
+            $request->merge(['passwors'=>bcrypt($pass_generate)]);
+        } else {
+            $request->merge(['password'=> bcrypt($request->password)]);
         }
         $user = User::create($request->all());
         $user = User::find($user->id);
