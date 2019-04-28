@@ -118,6 +118,13 @@ class authController extends Controller {
         
     }
 
+    public function ativar_conta (Request $request) {
+        $user = User::find_uuid($request->uuid);
+        $user->status = 1;
+        $user->save();
+        return response()->json(['success'=>'Conta ativada com sucesso'], 200);
+    }
+
     public function trocar_senha (Request $request) {
         if(!Hash::check($request->senha_atual, Auth::user()->password)) {
             return response()->json(['error'=>'A senha atual não é igual'], 206);

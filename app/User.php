@@ -20,7 +20,7 @@ class User extends Authenticatable {
     protected $fillable = [
         'uuid', 'nome', 'email', 'password', 'role', 
         'cpf_cnpj', 'data_nascimento', 'nome_mae',
-        'nome_pai', 'endereco_id', 'status'
+        'nome_pai', 'endereco_id', 'status', 'api_token'
     ];
 
     protected $hidden = [
