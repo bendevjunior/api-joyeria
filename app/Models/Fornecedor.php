@@ -37,4 +37,8 @@ class Fornecedor extends Model {
     public static function find_uuid($uuid) {
        return Fornecedor::where('uuid', $uuid)->first();
     }
+
+    public function endereco() {
+        return $this->belongsTo(Endereco::class);
+    }
 }
