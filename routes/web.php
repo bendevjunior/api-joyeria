@@ -13,5 +13,5 @@
 use App\User;
 Route::get('/', function () {
    $user = User::find(1); 
-   dd($user->endereco->rua);
+   dd($user->endereco->cidade->nome);
 });

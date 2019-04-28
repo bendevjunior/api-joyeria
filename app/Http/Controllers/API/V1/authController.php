@@ -15,7 +15,6 @@ use Mail;
 
 
 use App\User;
-use App\Models\Empresa;
 use App\Models\Endereco;
 
 class authController extends Controller {
@@ -43,21 +42,17 @@ class authController extends Controller {
 
 		//verify permission
         $user = User::find(auth()->user()->id);
-		if($user->ativo == 0) {
-			return response()->json(['error' => 'Você não validou o email'], 203);
-        }
-        if($user->role == 1 && $user->empresa->ativo != 1) {
-            return response()->json(['error' => 'A empresa ainda não está liberada para operar'], 205);
-        }
-        $empresa = $user->empresa;
-        $user->role == 1 ? $endereco = $empresa->endereco : $endereco = $user->endereco;
+		
+        $endereco = $user->endereco;
+        $endereco_cidade = $user->endereco->cidade->nome;
+        $endereco_estado = $user->endereco->estado->nome;
 
 
 		//save PIND
 		//$user->PNID = $request->pnid;
 		//$user->save();
 
-		return response()->json(compact('token', 'user', 'endereco', 'empresa'));
+		return response()->json(compact('token', 'user'));
 	}
 
 
