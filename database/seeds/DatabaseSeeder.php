@@ -27,5 +27,6 @@ class DatabaseSeeder extends Seeder
             'endereco_id' => 1,
             'status' => 1
         ]);
+        $this->call(FornecedorSeed::class);
     }
 }
