@@ -27,4 +27,17 @@ class FornecedorController extends Controller {
         
     }
 
+    public function show(Request $request) {
+        //se passar uuid retorna apenas o fornecedor especifico
+        if($request->uuid == null) {
+            $fornecedor = Fornecedor::orderBy('nome', 'asc')->get();
+        } else {
+            $fornecedor = Fornecedor::find_uuid($request->uuid);
+            $endereco = $fornecedor->endereco;
+            $endereco_cidade = $fornecedor->endereco->cidade->nome;
+            $endereco_estado = $fornecedor->endereco->estado->nome;
+        }
+        return response()->json(compact('fornecedor'));
+    }
+
 }
