@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,6 +15,16 @@ class DatabaseSeeder extends Seeder
         $this->call(sys_estado_br::class);
         $this->call(sys_cidade_br::class);
         $this->call(endereco_seed::class);
-        //$this->call(UserSeeder::class);
+        User::create([
+            'nome'=> 'Augusto Furlan',
+            'email'=> 'gulyfurlan@gmail.com',
+            'password'=>bcrypt('123123'), 
+            'role'=>1, 
+            'cpf_cnpj'=>'428.338.578-61', 
+            'data_nascimento'=>'1996-07-31', 
+            'nome_mae'=> 'Estela',
+            'nome_pai'=> 'Flavio', 
+            'endereco_id' => 1
+        ]);
     }
 }

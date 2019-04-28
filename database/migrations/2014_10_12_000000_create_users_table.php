@@ -16,6 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid');
+            $table->integer('endereco_id')->unsigned();
             $table->string('nome');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -28,6 +29,9 @@ class CreateUsersTable extends Migration
             $table->integer('role')->default(3)->comment('1-admin | 2-revendedor | 3 - usuario do e-comerce');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('endereco_id')->references('id')->on('enderecos');
+
         });
     }
 

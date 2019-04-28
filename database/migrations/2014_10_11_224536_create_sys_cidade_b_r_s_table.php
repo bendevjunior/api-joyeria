@@ -31,6 +31,6 @@ class CreateSysCidadeBRSTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sys_cidade_b_r_s');
+        Schema::dropIfExists('sys_cidade_br');
     }
 }
