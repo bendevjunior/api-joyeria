@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             'data_nascimento'=>'1996-07-31', 
             'nome_mae'=> 'Estela',
             'nome_pai'=> 'Flavio', 
-            'endereco_id' => 1
+            'endereco_id' => 1,
+            'status' => 1
         ]);
     }
 }

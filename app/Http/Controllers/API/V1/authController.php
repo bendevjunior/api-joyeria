@@ -43,6 +43,9 @@ class authController extends Controller {
 
 		//verify permission
         $user = User::find(auth()->user()->id);
+        if($user->status == 0) {
+            return response()->json(['error' => 'Usuário não ativado'], 403);
+        }
 		
         $endereco = $user->endereco;
         $endereco_cidade = $user->endereco->cidade->nome;
@@ -100,6 +103,9 @@ class authController extends Controller {
             $request->merge(['passwors'=>bcrypt($pass_generate)]);
         } else {
             $request->merge(['password'=> bcrypt($request->password)]);
+        }
+        if($request->ativo == 1) {
+            $request->merge(['status'=>1]);
         }
         $user = User::create($request->all());
         $user = User::find($user->id);
