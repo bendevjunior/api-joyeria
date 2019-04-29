@@ -18,7 +18,7 @@ class ProdutoSeed extends Seeder
             "qnt"=> 10,
             "qnt_min"=>2, 
             "lote"=>"LOTE", 
-            "valore_bruto"=>"10.00", 
+            "valor_bruto"=>"10.00", 
             "valor_banho"=>"2.00",
             "valor_venda"=>"20.00", 
             "peso"=>"10.00"
@@ -30,7 +30,7 @@ class ProdutoSeed extends Seeder
             "qnt"=> 10,
             "qnt_min"=>2, 
             "lote"=>"LOTE", 
-            "valore_bruto"=>"10.00", 
+            "valor_bruto"=>"10.00", 
             "valor_banho"=>"2.00",
             "valor_venda"=>"20.00", 
             "peso"=>"10.00"

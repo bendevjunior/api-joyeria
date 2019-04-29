@@ -23,5 +23,8 @@ Route::group(['middleware' => 'jwt.auth', 'prefix' => 'fornecedor'], function ()
 Route::group(['middleware' => 'jwt.auth', 'prefix' => 'produto'], function () {
     Route::post('store', "API\V1\ProdutoController@store");
     Route::post('store_update', "API\V1\ProdutoController@store_update_fornecedor");
-    
+});
+
+Route::group(['middleware' => 'jwt.auth', 'prefix' => 'produto/compra'], function () {
+    Route::post('store', "API\V1\ProdutoCompraController@store");
 });

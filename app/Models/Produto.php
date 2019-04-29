@@ -14,7 +14,7 @@ class Produto extends Model {
 
     protected $fillable = [
         'uuid', 'nome', 'descricao', 'codigo_de_barras', 'qnt',
-        'qnt_min', 'lote', 'valore_bruto', 'valor_banho',
+        'qnt_min', 'lote', 'valor_bruto', 'valor_banho',
         'valor_venda', 'peso', 'status', 'numero_codigo_de_barras'
     ];
 
@@ -40,6 +40,7 @@ class Produto extends Model {
        return Produto::where('uuid', $uuid)->first();
     }
 
+    //relacionamento
     public function fornecedores() {
         return $this->belongsToMany(Fornecedor::class, 'pivo_produto_fornecedors');
     }
@@ -47,6 +48,10 @@ class Produto extends Model {
     public function foto() {
         return $this->hasMany(ProdutoFoto::class);
     }
+
+
+
+    
 
     
 }
