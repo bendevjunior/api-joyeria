@@ -44,5 +44,9 @@ class Produto extends Model {
         return $this->belongsToMany(Fornecedor::class, 'pivo_produto_fornecedors');
     }
 
+    public function foto() {
+        return $this->hasMany(ProdutoFoto::class);
+    }
+
     
 }

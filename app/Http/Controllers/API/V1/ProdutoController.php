@@ -36,12 +36,12 @@ class ProdutoController extends Controller {
     public function show (Request $request) {
         if(is_null($request->produto_uuid)) {
             //list all
-            $produto = Produto::where('status', 1)->get();
+            $produto = Produto::where('status', 1)->with('foto')->get();
         } else {
             $produto = Produto::find_uuid($request->produto_uuid);
             $produto_fornecedor = $produto->fornecedores;
+            $produto_foto = $produto->foto;
         }
-                
         return response()->json(compact('produto'));
     }
 
