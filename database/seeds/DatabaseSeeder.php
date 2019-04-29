@@ -28,5 +28,7 @@ class DatabaseSeeder extends Seeder
             'status' => 1
         ]);
         $this->call(FornecedorSeed::class);
+        $this->call(ProdutoSeed::class);
+        $this->call(ProdutoFornecedorSeed::class);
     }
 }

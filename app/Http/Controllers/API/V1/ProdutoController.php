@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Produto;
+use App\Models\Fornecedor;
+use App\Models\PivoProdutoFornecedor;
 
 class ProdutoController extends Controller {
     
@@ -16,6 +18,19 @@ class ProdutoController extends Controller {
         $produto->save();
         $produto = Produto::find($produto->id);
         return response()->json(compact('produto')); 
+    }
+
+    public function store_update_fornecedor(Request $request) {
+        $produto = Produto::find_uuid($request['produto_uuid']);
+        PivoProdutoFornecedor::where('produto_id', $produto->id)->delete();
+        foreach($request['fornecedores'] as $fornecedor_uuid) {
+            $fornecedor = Fornecedor::find_uuid($fornecedor_uuid["fornecedor_uuid"]);
+            PivoProdutoFornecedor::create([
+                'produto_id'    => $produto->id, 
+                'fornecedor_id' => $fornecedor->id
+            ]);
+        }
+        return response()->json(['success'=>'Fornecedor vinculado com sucesso']);
     }
 
 }
