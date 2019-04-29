@@ -27,6 +27,18 @@ class DatabaseSeeder extends Seeder
             'endereco_id' => 1,
             'status' => 1
         ]);
+        User::create([
+            'nome'=> 'Júnior Silva',
+            'email'=> 'juniorsilvaasafe@gmail.com',
+            'password'=>bcrypt('admin@9988'), 
+            'role'=>1, 
+            'cpf_cnpj'=>'057.666.091-40', 
+            'data_nascimento'=>'1998-10-20', 
+            'nome_mae'=> 'Eunice',
+            'nome_pai'=> 'Benedito', 
+            'endereco_id' => 1,
+            'status' => 1
+        ]);
         $this->call(FornecedorSeed::class);
         $this->call(ProdutoSeed::class);
         $this->call(ProdutoFornecedorSeed::class);
