@@ -33,4 +33,16 @@ class ProdutoController extends Controller {
         return response()->json(['success'=>'Fornecedor vinculado com sucesso']);
     }
 
+    public function show (Request $request) {
+        if(is_null($request->produto_uuid)) {
+            //list all
+            $produto = Produto::where('status', 1)->get();
+        } else {
+            $produto = Produto::find_uuid($request->produto_uuid);
+            $produto_fornecedor = $produto->fornecedores;
+        }
+                
+        return response()->json(compact('produto'));
+    }
+
 }

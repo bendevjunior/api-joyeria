@@ -37,7 +37,11 @@ class Produto extends Model {
 
 
     public static function find_uuid($uuid) {
-       return Produtos::where('uuid', $uuid)->first();
+       return Produto::where('uuid', $uuid)->first();
+    }
+
+    public function fornecedores() {
+        return $this->belongsToMany(Fornecedor::class, 'pivo_produto_fornecedors');
     }
 
     
