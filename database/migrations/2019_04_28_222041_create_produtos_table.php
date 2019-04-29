@@ -18,7 +18,8 @@ class CreateProdutosTable extends Migration
             $table->uuid('uuid');
             $table->string('nome');
             $table->string('descricao');
-            $table->string('codigo_de_barras');
+            $table->string('codigo_de_barras')->nullable();
+            $table->string('numero_codigo_de_barras')->nullable();
             $table->integer('qnt')->default(0);
             $table->integer('qnt_min')->default(0);
             $table->string('lote');
@@ -26,7 +27,7 @@ class CreateProdutosTable extends Migration
             $table->decimal('valor_banho', 11, 2)->nullable();
             $table->decimal('valor_venda', 11, 2)->nullable();
             $table->decimal('peso', 11, 2)->nullable();
-            $table->smallInteger('status')->default(0)->comment('0-desativado | 1- ativado');
+            $table->smallInteger('status')->default(1)->comment('0-desativado | 1- ativado');
             $table->timestamps();
             $table->softDeletes();
         });

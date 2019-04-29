@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Uuid;
 
 
-class Produtos extends Model {
+class Produto extends Model {
     protected $table = 'produtos';
     use SoftDeletes;
 
     protected $fillable = [
         'uuid', 'nome', 'descricao', 'codigo_de_barras', 'qnt',
         'qnt_min', 'lote', 'valore_bruto', 'valor_banho',
-        'valor_venda', 'peso', 'status'
+        'valor_venda', 'peso', 'status', 'numero_codigo_de_barras'
     ];
 
     /**
