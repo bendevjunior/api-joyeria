@@ -12,7 +12,10 @@
      
     </head>
     <body>
-        <div id="app"></div>
+        <div id="app">
+            <router-view></router-view>
+        </div>
+        
         <script src="{{ asset('/js/app.js') }}"></script>
     </body>
     

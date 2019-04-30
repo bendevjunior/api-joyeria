@@ -1,15 +1,16 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-//Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
+import router from './routes/routers';
+import store from './vuex/store';
 
 /**
 * Components globais vue
 */
-Vue.component('test-component' , require('./components/TestComponent.vue'));
-
+Vue.component('admin-component' , require('./components/admin/AdminComponent').default);
 
 const app = new Vue({
+    router , 
+    store,
     el: '#app',
 });
