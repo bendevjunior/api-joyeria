@@ -41,13 +41,7 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-$app->configure('cors');
 
-$app->middleware([
-    Spatie\Cors\Cors::class,
-]);
-
-$app->register(Spatie\Cors\CorsServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
