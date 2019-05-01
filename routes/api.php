@@ -10,7 +10,7 @@ Route::get('produto/show', "API\V1\ProdutoController@show");
 Route::get('endereco/busca-estado/', "API\V1\\EnderecoController@busca_estado");
 Route::get('endereco/busca-cidade/', "API\V1\\EnderecoController@busca_cidade");
 
-Route::group(['middleware' => 'jwt.auth', 'prefix' => 'auth'], function () {
+Route::group(['middleware' => 'jwt.auth','cors' ,  'prefix' => 'auth'], function () {
     Route::post('ativar-conta', "API\V1\authController@ativar_conta");
 });
 
