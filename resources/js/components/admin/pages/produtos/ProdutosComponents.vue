@@ -25,15 +25,7 @@
        },
         methods: {
             loadProdutos () {
-                axios.get('http://juniorsilva.blog.br/joyaria.web/api/produto/show'
-                 , {
-                     withCredentials: true,
-      headers : {                  
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers": "Authorization", 
-          "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, PATCH, DELETE" ,
-          "Content-Type": "application/json;charset=UTF-8"                   
-      },})
+                axios.get('http://juniorsilva.blog.br/joyaria.web/api/produto/show')
                 .then(response => {
                     console.log(response)
                 })
