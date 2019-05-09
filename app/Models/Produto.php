@@ -49,6 +49,10 @@ class Produto extends Model {
         return $this->hasMany(ProdutoFoto::class);
     }
 
+    public function ultima_compra() {
+        return ProdutoCompra::where('produto_id', $this->id)->orderBy('id', 'desc')->first();
+    }
+
 
 
     

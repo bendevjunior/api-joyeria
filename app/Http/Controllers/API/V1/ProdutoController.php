@@ -11,6 +11,13 @@ use App\Models\PivoProdutoFornecedor;
 
 class ProdutoController extends Controller {
     
+    public function index () {
+        $produtos = Produto::where('status', 1)->orderBy('nome', 'asc')->get();
+        foreach ($produtos as $produto) {
+            $produto->ultima_compra = $produto->ultima_compra();
+        }
+        return response()->json(compact('produtos'));
+    }
     
     public function store(Request $request) {
         $produto = Produto::create($request["produto"]);

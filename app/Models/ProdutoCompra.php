@@ -15,7 +15,9 @@ class ProdutoCompra extends Model {
     protected $fillable = [
         'uuid', 'produto_id', 'fornecedor_id', 'descricao', 
         'qnt', 'lote', 'valor_unitario', 'valor_total',
-        'peso_total', 'data_pagamento', 'data_entrega'
+        'peso_total', 'data_pagamento', 'data_entrega',
+        'numero_nf', 'data_fabricacao', 'galvanica',
+        'banho', 'milisimagem_ouro', 'valor etiqueta'
     ];
 
     
