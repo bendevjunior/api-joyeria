@@ -23,7 +23,9 @@ Route::group(['middleware' => 'jwt.auth', 'cors','prefix' => 'fornecedor'], func
 
 Route::group(['middleware' => 'jwt.auth', 'cors', 'prefix' => 'produto'], function () {
     Route::post('store', "API\V1\ProdutoController@store");
+    Route::post('foto/store', "API\V1\ProdutoController@store_foto");
     Route::post('store_update', "API\V1\ProdutoController@store_update_fornecedor");
+    Route::delete('foto/delete', "API\V1\ProdutoController@destroy_foto");
 });
 
 Route::group(['middleware' => 'jwt.auth','cors','prefix' => 'produto/compra'], function () {

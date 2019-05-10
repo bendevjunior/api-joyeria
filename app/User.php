@@ -6,11 +6,14 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
+
 use Uuid;
 
 use App\Models\Endereco;
 
-class User extends Authenticatable {
+class User extends Authenticatable implements JWTSubject {
 
     protected $table = 'users';
     use Notifiable;

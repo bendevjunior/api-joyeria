@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Produto;
+use App\Models\ProdutoFoto;
 use App\Models\Fornecedor;
 use App\Models\PivoProdutoFornecedor;
 
@@ -20,10 +21,20 @@ class ProdutoController extends Controller {
     }
     
     public function store(Request $request) {
+        
         $produto = Produto::create($request["produto"]);
         $produto->numero_codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
         $produto->save();
         $produto = Produto::find($produto->id);
+        if($request["fotos"] != null) {
+            foreach($request["fotos"] as $foto) {
+                ProdutoFoto::create([
+                    'produto_id' => $produto->id,
+                    'url' => $foto['foto']
+                ]);
+            }
+        }
+
         return response()->json(compact('produto')); 
     }
 
@@ -50,6 +61,21 @@ class ProdutoController extends Controller {
             $produto_foto = $produto->foto;
         }
         return response()->json(compact('produto'));
+    }
+
+    public function store_foto(Request $request) {
+        $produto = Produto::find($produto->id);
+        ProdutoFoto::create([
+            'produto_id' => $produto->id,
+            'url' => $request->foto
+        ]);
+        return response()->json(compact('produto')); 
+    }
+
+    public function destroy_foto (Request $request) {
+        $ProdutoFoto =ProdutoFoto::find_uuid($request->uuid);
+        $ProdutoFoto->delete();
+        return response()->json(['sucesso'=>'imagem deletada com sucesso']);
     }
 
 }
