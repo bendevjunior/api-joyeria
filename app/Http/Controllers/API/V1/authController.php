@@ -2,83 +2,17 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use App\Mail\ConfirmEmailAddress;
-use Mail;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 
 
 use App\User;
 use App\Models\Endereco;
 
 class authController extends Controller {
-	/**
-     * Attempt to log the user into the application.
-     *
-     * @param  email password isp_id
-     * @return json
-     */
-    public function authenticate(Request $request) {
-        // grab credentials from the request
-		$credentials = $request->only('email', 'password');
-
-		try {
-			// attempt to verify the credentials and create a token for the user
-			if (! $token = JWTAuth::attempt($credentials)) {
-				return response()->json(['error' => 'invalid_credentials'], 401);
-			}
-		} catch (JWTException $e) {
-			// something went wrong whilst attempting to encode the token
-			return response()->json(['error' => 'could_not_create_token'], 500);
-		}
-
-		$user = auth()->user();
-
-		//verify permission
-        $user = User::find(auth()->user()->id);
-        if($user->status == 0) {
-            return response()->json(['error' => 'Usuário não ativado'], 403);
-        }
-		
-        $endereco = $user->endereco;
-        $endereco_cidade = $user->endereco->cidade->nome;
-        $endereco_estado = $user->endereco->estado->nome;
-
-
-		//save PIND
-		//$user->PNID = $request->pnid;
-		//$user->save();
-
-		return response()->json(compact('token', 'user'));
-	}
-
-
-
-	/**
-     * Get the guard to be used during authentication.
-     *
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
-     */
-    protected function guard() {
-        return Auth::guard('api');
-	}
-
-	/**
-     * Refresh TOKEN And generate new token.
-     * @param none
-     * @return json
-     */
-	public function token_refresh() {
-        $token = $this->guard()->refresh(true);
-        return response()->json(compact('token'));
-    }
+	
 
     /**
      * Register .
@@ -152,6 +86,66 @@ class authController extends Controller {
         $user = User::find(auth()->user()->id);
         $user->update($request->all());
         return response()->json(compact('user'));
+    }
+
+    
+  
+    /**
+     * Login user and create token
+     *
+     * @param  [string] email
+     * @param  [string] password
+     * @param  [boolean] remember_me
+     * @return [string] access_token
+     * @return [string] token_type
+     * @return [string] expires_at
+     */
+    public function login(Request $request)
+    {
+        
+        
+        $credentials = request(['email', 'password']);
+        if(!Auth::attempt($credentials))
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
+        $user = $request->user();
+        $tokenResult = $user->createToken('Personal Access Token');
+        $token = $tokenResult->token;
+        if ($request->remember_me)
+            $token->expires_at = Carbon::now()->addWeeks(1);
+        $token->save();
+        return response()->json([
+            'access_token' => $tokenResult->accessToken,
+            'token_type' => 'Bearer',
+            'user' => $user,
+            'expires_at' => Carbon::parse(
+                $tokenResult->token->expires_at
+            )->toDateTimeString()
+        ]);
+    }
+  
+    /**
+     * Logout user (Revoke the token)
+     *
+     * @return [string] message
+     */
+    public function logout(Request $request)
+    {
+        $request->user()->token()->revoke();
+        return response()->json([
+            'message' => 'Successfully logged out'
+        ]);
+    }
+  
+    /**
+     * Get the authenticated User
+     *
+     * @return [json] user object
+     */
+    public function user(Request $request)
+    {
+        return response()->json($request->user());
     }
 
 
