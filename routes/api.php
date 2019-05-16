@@ -40,3 +40,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('ativar-conta', "API\V1\authController@ativar_conta");
     });
 });
+
+Route::group(['middleware' => 'auth:api','cors','prefix' => 'dashboard'], function () {
+    Route::get('count/{mes?}/{ano?}', "API\V1\DashboardController@dashboard_count");
+});
