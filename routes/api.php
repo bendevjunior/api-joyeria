@@ -10,9 +10,7 @@ Route::get('endereco/busca-estado/', "API\V1\\EnderecoController@busca_estado");
 Route::get('endereco/busca-cidade/', "API\V1\\EnderecoController@busca_cidade");
 
 
-Route::group(['middleware' => 'auth:api', 'prefix' => 'auth'], function () {
-    Route::post('ativar-conta', "API\V1\authController@ativar_conta");
-});
+
 
 Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'fornecedor'], function () {
     Route::post('store', "API\V1\FornecedorController@store");
@@ -38,5 +36,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::group(['middleware' => 'auth:api'], function() {
         Route::get('logout', 'API\V1\authController@logout');
         Route::get('user', 'API\V1\authController@user');
+        Route::get('user/list', 'API\V1\authController@user_list');
+        Route::post('ativar-conta', "API\V1\authController@ativar_conta");
     });
 });

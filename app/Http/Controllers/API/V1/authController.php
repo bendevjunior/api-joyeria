@@ -82,7 +82,7 @@ class authController extends Controller {
         return response()->json(compact('user', 'empresa'));
     }
 
-    public function update_perfil() {
+    public function update_perfil(Request $request) {
         $user = User::find(auth()->user()->id);
         $user->update($request->all());
         return response()->json(compact('user'));
@@ -146,6 +146,13 @@ class authController extends Controller {
     public function user(Request $request)
     {
         return response()->json($request->user());
+    }
+
+    //mostra o total de user cadastrado
+    public function user_list () {
+        $users = User::all();
+        $users_count = $users->count();
+        return response()->json(compact('users_count', 'users'));
     }
 
 
