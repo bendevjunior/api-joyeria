@@ -29,6 +29,7 @@ class CreateProdutosTable extends Migration
             $table->decimal('valor_banho', 11, 2)->nullable();
             $table->decimal('valor_venda', 11, 2)->nullable();
             $table->decimal('peso', 11, 2)->nullable();
+            $table->text('primeira_imagem')->nullable();
             $table->smallInteger('status')->default(1)->comment('0-desativado | 1- ativado');
             $table->timestamps();
             $table->softDeletes();
