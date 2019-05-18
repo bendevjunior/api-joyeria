@@ -16,6 +16,8 @@ class CreateProdutosTable extends Migration
         Schema::create('produtos', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid');
+            $table->integer('categoria_id')->unsigned();
+            $table->integer('colecao_id')->unsigned();
             $table->string('nome');
             $table->string('descricao');
             $table->string('codigo_de_barras')->nullable();
@@ -30,6 +32,10 @@ class CreateProdutosTable extends Migration
             $table->smallInteger('status')->default(1)->comment('0-desativado | 1- ativado');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('categoria_id')->references('id')->on('product_categories');
+            $table->foreign('colecao_id')->references('id')->on('produto_colecaos');
+
         });
     }
 

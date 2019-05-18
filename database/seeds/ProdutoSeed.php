@@ -21,7 +21,9 @@ class ProdutoSeed extends Seeder
             "valor_bruto"=>"10.00", 
             "valor_banho"=>"2.00",
             "valor_venda"=>"20.00", 
-            "peso"=>"10.00"
+            "peso"=>"10.00",
+            'categoria_id' => 1,
+            'colecao_id' => 1
         ]);
 
         Produto::create([
@@ -33,7 +35,9 @@ class ProdutoSeed extends Seeder
             "valor_bruto"=>"10.00", 
             "valor_banho"=>"2.00",
             "valor_venda"=>"20.00", 
-            "peso"=>"10.00"
+            "peso"=>"10.00",
+            'categoria_id' => 1,
+            'colecao_id' => 2
         ]);
 
     }

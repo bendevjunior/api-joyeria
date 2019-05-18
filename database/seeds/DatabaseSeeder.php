@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
         $this->call(sys_estado_br::class);
         $this->call(sys_cidade_br::class);
         $this->call(endereco_seed::class);
+        $this->call(ProdutoCategorySeed::class);
+        $this->call(ProdutoColecaoSeed::class);
         User::create([
             'nome'=> 'Augusto Furlan',
             'email'=> 'gulyfurlan@gmail.com',

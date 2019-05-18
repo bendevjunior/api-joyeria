@@ -15,7 +15,8 @@ class Produto extends Model {
     protected $fillable = [
         'uuid', 'nome', 'descricao', 'codigo_de_barras', 'qnt',
         'qnt_min', 'lote', 'valor_bruto', 'valor_banho',
-        'valor_venda', 'peso', 'status', 'numero_codigo_de_barras'
+        'valor_venda', 'peso', 'status', 'numero_codigo_de_barras',
+        'categoria_id', 'colecao_id'
     ];
 
     /**
@@ -51,6 +52,14 @@ class Produto extends Model {
 
     public function ultima_compra() {
         return ProdutoCompra::where('produto_id', $this->id)->orderBy('id', 'desc')->first();
+    }
+
+    public function categoria() {
+        return $this->belongsTo(ProductCategory::class);
+    }
+
+    public function colecao() {
+        return $this->belongsTo(ProdutoColecao::class);
     }
 
 

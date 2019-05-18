@@ -9,6 +9,8 @@ use App\Models\Produto;
 use App\Models\ProdutoFoto;
 use App\Models\Fornecedor;
 use App\Models\PivoProdutoFornecedor;
+use App\Models\ProductCategory;
+use App\Models\ProdutoColecao;
 
 class ProdutoController extends Controller {
     
@@ -22,7 +24,13 @@ class ProdutoController extends Controller {
     
     public function store(Request $request) {
         
-        $produto = Produto::create($request["produto"]);
+        
+        $produto = $request["produto"];
+        $categoria = ProductCategory::find_uuid($produto['categoria_uuid']);
+        $colecao = ProdutoColecao::find_uuid($produto['colecao_uuid']);
+        $produto['categoria_id']=$categoria->id;
+        $produto['colecao_id']=$colecao->id;
+        $produto = Produto::create($produto);
         $produto->numero_codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
         $produto->save();
         $produto = Produto::find($produto->id);
@@ -34,7 +42,8 @@ class ProdutoController extends Controller {
                 ]);
             }
         }
-
+        $categoria = $produto->categoria;
+        $colecao = $produto->colecao;
         return response()->json(compact('produto')); 
     }
 
@@ -54,11 +63,13 @@ class ProdutoController extends Controller {
     public function show (Request $request) {
         if(is_null($request->produto_uuid)) {
             //list all
-            $produto = Produto::where('status', 1)->with('foto')->get();
+            $produto = Produto::where('status', 1)->with('foto', 'categoria', 'colecao')->get();
         } else {
             $produto = Produto::find_uuid($request->produto_uuid);
             $produto_fornecedor = $produto->fornecedores;
             $produto_foto = $produto->foto;
+            $categoria = $produto->categoria;
+            $colecao = $produto->colecao;
         }
         return response()->json(compact('produto'));
     }
@@ -77,5 +88,51 @@ class ProdutoController extends Controller {
         $ProdutoFoto->delete();
         return response()->json(['sucesso'=>'imagem deletada com sucesso']);
     }
+
+    public function categoria_store(Request $request) {
+        $productCategory = ProductCategory::create($request->all());
+        return response()->json(compact('productCategory')); 
+    }
+
+    public function categoria_update(Request $request) {
+        $productCategory = ProductCategory::find_uuid($request->uuid);
+        $productCategory->update($request->all());
+        return response()->json(compact('productCategory')); 
+    }
+
+    public function categoria_index(Request $request) {
+        $categoria = ProductCategory::where('status', 1)->orderBy('nome', 'asc')->with('produto')->get();
+        return response()->json(compact('categoria'));
+    }
+
+    public function categoria_produto(Request $request) {
+        $categoria = ProductCategory::find_uuid($request->uuid);
+        $produto = Produto::where('categoria_id', $categoria->id)->orderBy('nome', 'asc')->with('foto', 'colecao')->get();
+        return response()->json(compact('produto'));
+    }
+
+    public function colecao_store(Request $request) {
+        $productCategory = ProdutoColecao::create($request->all());
+        return response()->json(compact('productCategory')); 
+    }
+
+    public function colecao_update(Request $request) {
+        $produtoColecao = ProdutoColecao::find_uuid($request->uuid);
+        $produtoColecao->update($request->all());
+        return response()->json(compact('produtoColecao')); 
+    }
+
+    public function colecao_index(Request $request) {
+        $colecao = ProdutoColecao::where('status', 1)->orderBy('nome', 'asc')->with('produto')->get();
+        return response()->json(compact('colecao'));
+    }
+
+    public function colecao_produto(Request $request) {
+        $colecao = ProdutoColecao::find_uuid($request->uuid);
+        $produto = Produto::where('colecao_id', $colecao->id)->orderBy('nome', 'asc')->with('foto', 'colecao')->get();
+        return response()->json(compact('produto'));
+    }
+
+    
 
 }

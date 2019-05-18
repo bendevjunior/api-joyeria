@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 
 Route::get('produto/show', "API\V1\ProdutoController@show");
 Route::get('produto/list', "API\V1\ProdutoController@index");
+Route::get('produto/categoria/show/{uuid}', "API\V1\ProdutoController@categoria_produto");
+Route::get('produto/categoria/list', "API\V1\ProdutoController@categoria_index");
 Route::get('endereco/busca-estado/', "API\V1\\EnderecoController@busca_estado");
 Route::get('endereco/busca-cidade/', "API\V1\\EnderecoController@busca_cidade");
 
+Route::get('produto/colecao/show/{uuid}', "API\V1\ProdutoController@colecao_produto");
+Route::get('produto/colecao/list', "API\V1\ProdutoController@colecao_index");
 
 
 
@@ -27,6 +31,17 @@ Route::group(['middleware' => 'auth:api', 'cors', 'prefix' => 'produto'], functi
 
 Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/compra'], function () {
     Route::post('store', "API\V1\ProdutoCompraController@store");
+});
+
+Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/categoria'], function () {
+    Route::post('store', "API\V1\ProdutoController@categoria_store");
+    Route::put('update', "API\V1\ProdutoController@categoria_update");
+    
+});
+
+Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/colecao'], function () {
+    Route::post('store', "API\V1\ProdutoController@colecao_store");
+    Route::put('update', "API\V1\ProdutoController@colecao_update");
 });
 
 Route::group(['prefix' => 'auth'], function () {
