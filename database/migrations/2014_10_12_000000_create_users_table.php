@@ -29,6 +29,8 @@ class CreateUsersTable extends Migration
             $table->string('api_token')->nullable();
             $table->string('tel1')->nullable();
             $table->string('tel2')->nullable();
+            $table->text('obs')->nullable();
+            $table->string('status_spc')->nullable();
             $table->integer('role')->default(3)->comment('1-admin | 2-revendedor | 3 - usuario do e-comerce');
             $table->smallInteger('status')->default(0)->comment('0-desativado | 1- ativado');
             $table->timestamps();
