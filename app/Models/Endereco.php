@@ -49,4 +49,6 @@ class Endereco extends Model {
     	return $this->belongsTo(SysCidadeBR::class);
     }
 
+    
+
 }
