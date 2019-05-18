@@ -16,6 +16,7 @@ class CreateProductCategoriesTable extends Migration
         Schema::create('product_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid');
+            $table->integer('categoria_pai_id')->nullable();
             $table->string('nome');
             $table->smallInteger('status')->default(1)->comment('0-desativado | 1- ativado');
             $table->timestamps();
