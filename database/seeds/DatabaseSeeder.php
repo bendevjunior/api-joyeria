@@ -45,5 +45,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ProdutoSeed::class);
         $this->call(ProdutoFornecedorSeed::class);
         $this->call(ProdutoFotoSeed::class);
+        $this->call(ConsignadoSeed::class);
     }
 }

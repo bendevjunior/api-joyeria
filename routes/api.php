@@ -65,3 +65,10 @@ Route::group(['middleware' => 'auth:api','cors','prefix' => 'cliente'], function
     Route::put('update', 'API\V1\ClienteController@update');
     Route::get('lista', 'API\V1\ClienteController@index');
 });
+
+Route::group(['middleware' => 'auth:api','cors','prefix' => 'vendas'], function () {
+    Route::get('consignado/lista', 'API\V1\ConsignadoController@index');
+    Route::post('consignado/store', 'API\V1\ConsignadoController@store');
+
+    Route::put('update', 'API\V1\ClienteController@update');
+});
