@@ -20,13 +20,23 @@ class ClienteController extends Controller
     }
 
     public function store(Request $request) {
-        $endereco = Endereco::create($request->all());
-        $request->merge([
-            'endereco_id' => $endereco->id,
-            'password' => bcrypt($request->password)
-        ]);
-        $user = User::create($request->all());
+        $endereco = Endereco::create($request->endereco);
+        $cliente = $request->cliente;
+        $cliente['endereco_id'] = $endereco->id;
+        $cliente["password"] = is_null($request->cliente["password"]) ? bcrypt(rand(333333, 777777)) : bcrypt($request->cliente["password"]);
+        
+        $user = User::create($cliente);
         $user->endereco;
+        return response()->json(compact('user'));
+    }
+
+    public function update(Request $request) {
+        $user = User::find_uuid($request->cliente['uuid']);
+        $cliente = $request->cliente;
+        $cliente["password"] = is_null($request->cliente["password"]) ? $user->password : bcrypt($request->cliente["password"]);
+        $endereco = $user->endereco;
+        $endereco->update($request->endereco);
+        $user->update($cliente);
         return response()->json(compact('user'));
     }
 }

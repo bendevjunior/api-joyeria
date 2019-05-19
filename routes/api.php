@@ -14,6 +14,7 @@ Route::get('endereco/busca-cidade/', "API\V1\\EnderecoController@busca_cidade");
 Route::get('produto/colecao/show/{uuid}', "API\V1\ProdutoController@colecao_produto");
 Route::get('produto/colecao/list', "API\V1\ProdutoController@colecao_index");
 
+Route::post('cliente/store', 'API\V1\ClienteController@store');
 
 
 Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'fornecedor'], function () {
@@ -58,4 +59,9 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['middleware' => 'auth:api','cors','prefix' => 'dashboard'], function () {
     Route::get('count/{mes?}/{ano?}', "API\V1\DashboardController@dashboard_count");
+});
+
+Route::group(['middleware' => 'auth:api','cors','prefix' => 'cliente'], function () {
+    Route::put('update', 'API\V1\ClienteController@update');
+    Route::get('lista', 'API\V1\ClienteController@index');
 });
