@@ -69,6 +69,6 @@ Route::group(['middleware' => 'auth:api','cors','prefix' => 'cliente'], function
 Route::group(['middleware' => 'auth:api','cors','prefix' => 'vendas'], function () {
     Route::get('consignado/lista', 'API\V1\ConsignadoController@index');
     Route::post('consignado/store', 'API\V1\ConsignadoController@store');
+    Route::post('consignado/complete', 'API\V1\ConsignadoController@venda_consignado');
 
-    Route::put('update', 'API\V1\ClienteController@update');
 });

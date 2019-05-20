@@ -76,6 +76,12 @@ class Produto extends Model {
         $produto->save();
     }
 
+    public static function adicionar_ao_estoque($produto_id, $qnt) {
+        $produto = Produto::find($produto_id);
+        $produto->qnt = $produto->qnt + $qnt;
+        $produto->save();
+    }
+
 
 
     

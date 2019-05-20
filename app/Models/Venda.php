@@ -9,14 +9,15 @@ use Uuid;
 
 use App\User;
 
-class Consignado extends Model
+class Venda extends Model
 {
-    protected $table = 'consignados';
+    protected $table = 'vendas';
     use SoftDeletes;
 
     protected $fillable = [
-        'uuid', 'produto_id', 'cliente_id', 'consignado_id',
-        'qnt', 'qnt_vendido', 'data_devolucao', 'status'
+        'uuid', 'produto_id', 'cliente_id',
+        'qnt', 'preco', 'preco_final', 'preco_do_desconto', 
+        'data_pagamento', 'status'
     ];
 
     
@@ -42,5 +43,9 @@ class Consignado extends Model
 
     public function cliente() {
         return $this->belongsTo(User::class);
+    }
+
+    public function consignado () {
+        return $this->belongsTo(Consignado::class);
     }
 }
