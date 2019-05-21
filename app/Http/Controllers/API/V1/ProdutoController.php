@@ -101,7 +101,8 @@ class ProdutoController extends Controller {
     }
 
     public function categoria_index(Request $request) {
-        $categoria = ProductCategory::where('status', 1)->orderBy('nome', 'asc')->with('produto')->get();
+        //$categoria = ProductCategory::where('status', 1)->orderBy('nome', 'asc')->with('produto')->get();
+        $categoria = ProductCategory::where('status', 1)->orderBy('nome', 'asc')->get();
         return response()->json(compact('categoria'));
     }
 
