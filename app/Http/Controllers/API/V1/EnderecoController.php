@@ -12,7 +12,8 @@ use App\Models\SysCidadeBR;
 class EnderecoController extends Controller {
     
     public function busca_estado(Request $request) {
-        $estado = SysEstadoBR::where('nome', $request->nome)->first();
+        //$estado = SysEstadoBR::where('nome', $request->nome)->first();
+        $estado = SysEstadoBR::orderby('nome', 'asc')->get();
         return response()->json(compact('estado'));
     }
 
