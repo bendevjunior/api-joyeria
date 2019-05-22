@@ -47,7 +47,7 @@ Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/colecao'], 
 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'API\V1\authController@login');
-    Route::post('signup', 'API\V1\authController@signup');
+    Route::post('register', 'API\V1\authController@register');
   
     Route::group(['middleware' => 'auth:api'], function() {
         Route::get('logout', 'API\V1\authController@logout');
