@@ -5,13 +5,14 @@ use Illuminate\Http\Request;
 
 
 Route::get('produto/show', "API\V1\ProdutoController@show");
+Route::get('produto/{nome}', "API\V1\ProdutoController@mostrar");
 Route::get('produto/list', "API\V1\ProdutoController@index");
 Route::get('produto/categoria/show/{uuid}', "API\V1\ProdutoController@categoria_produto");
 Route::get('produto/categoria/list', "API\V1\ProdutoController@categoria_index");
 Route::get('endereco/busca-estado/', "API\V1\\EnderecoController@busca_estado");
 Route::get('endereco/busca-cidade/', "API\V1\\EnderecoController@busca_cidade");
 
-Route::get('produto/colecao/show/{uuid}', "API\V1\ProdutoController@colecao_produto");
+Route::get('produto/colecao/show/{nome}', "API\V1\ProdutoController@colecao_produto");
 Route::get('produto/colecao/list', "API\V1\ProdutoController@colecao_index");
 
 Route::post('cliente/store', 'API\V1\ClienteController@store');
