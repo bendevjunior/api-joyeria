@@ -109,7 +109,8 @@ class ProdutoController extends Controller {
     public function categoria_produto(Request $request) {
         $categoria = ProductCategory::find_uuid($request->uuid);
         $produto = Produto::where('categoria_id', $categoria->id)->orderBy('nome', 'asc')->with('foto', 'colecao')->get();
-        return response()->json(compact('produto'));
+        $qnt = $produto->count();
+        return response()->json(compact('qnt', 'produto'));
     }
 
     public function colecao_store(Request $request) {
@@ -131,7 +132,8 @@ class ProdutoController extends Controller {
     public function colecao_produto(Request $request) {
         $colecao = ProdutoColecao::find_uuid($request->uuid);
         $produto = Produto::where('colecao_id', $colecao->id)->orderBy('nome', 'asc')->with('foto', 'colecao')->get();
-        return response()->json(compact('produto'));
+        $qnt = $produto->count();
+        return response()->json(compact('qnt', 'produto'));
     }
 
     
