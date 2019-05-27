@@ -166,4 +166,13 @@ class ProdutoController extends Controller
         $qnt = $produto->count();
         return response()->json(compact('qnt', 'produto'));
     }
+    
+    public function categoria_produto_nome(Request $request)
+    {
+        $categoria = ProductCategory::where('nome', $request->nome)->first();
+ 
+        $produto = Produto::where('categoria_id', $categoria->id)->orderBy('nome', 'asc')->with('foto', 'colecao')->get();
+        $qnt = $produto->count();
+        return response()->json(compact('qnt', 'produto'));
+    }
 }
