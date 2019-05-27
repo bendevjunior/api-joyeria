@@ -155,7 +155,7 @@ class ProdutoController extends Controller
         foreach($colecoes as $colecao) {
             $colecao->qnt = $colecao->QntProduto;
         }
-        return response()->json(compact('colecao'));
+        return response()->json(compact('colecoes'));
     }
 
     public function colecao_produto(Request $request)
