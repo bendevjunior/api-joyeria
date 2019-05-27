@@ -152,7 +152,8 @@ class ProdutoController extends Controller
 
     public function colecao_produto(Request $request)
     {
-        $colecao = ProdutoColecao::where('nome', $request->nome);
+        $colecao = ProdutoColecao::where('nome', $request->nome)->first();
+ 
         $produto = Produto::where('colecao_id', $colecao->id)->orderBy('nome', 'asc')->with('foto', 'colecao')->get();
         $qnt = $produto->count();
         return response()->json(compact('qnt', 'produto'));
