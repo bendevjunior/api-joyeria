@@ -36,4 +36,8 @@ class ProdutoColecao extends Model
     public function produto() {
         return $this->hasMany(Produto::class, 'colecao_id');
     }
+
+    public function getQntProdutoAttribute(){
+        return Produto::where('colecao_id', $this->id)->get()->count(); 
+    }
 }

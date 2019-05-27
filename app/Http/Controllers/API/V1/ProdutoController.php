@@ -121,8 +121,11 @@ class ProdutoController extends Controller
     public function categoria_index(Request $request)
     {
         //$categoria = ProductCategory::where('status', 1)->orderBy('nome', 'asc')->with('produto')->get();
-        $categoria = ProductCategory::where('status', 1)->orderBy('nome', 'asc')->get();
-        return response()->json(compact('categoria'));
+        $categorias = ProductCategory::where('status', 1)->orderBy('nome', 'asc')->get();
+        foreach($categorias as $categoria) {
+            $categoria->qnt = $categoria->QntProduto;
+        }
+        return response()->json(compact('categorias'));
     }
 
     public function categoria_produto(Request $request)
@@ -148,7 +151,10 @@ class ProdutoController extends Controller
 
     public function colecao_index(Request $request)
     {
-        $colecao = ProdutoColecao::where('status', 1)->orderBy('nome', 'asc')->get();
+        $colecoes = ProdutoColecao::where('status', 1)->orderBy('nome', 'asc')->get();
+        foreach($colecoes as $colecao) {
+            $colecao->qnt = $colecao->QntProduto;
+        }
         return response()->json(compact('colecao'));
     }
 
