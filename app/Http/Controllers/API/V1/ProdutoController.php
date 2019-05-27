@@ -82,7 +82,7 @@ class ProdutoController extends Controller
 
     public function  mostrar(Request $request)
     {
-        $produto = Produto::where('nome', $request->nome)->where('status', 1)->with('foto', 'categoria', 'colecao')->first();
+        $produto = Produto::where('nome', $request->nome)->where('status', 1)->with('foto', 'categoria', 'colecao', 'UltimaCompra')->first();
         return response()->json(compact('produto'));
     }
 

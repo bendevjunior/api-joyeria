@@ -62,6 +62,12 @@ class Produto extends Model {
         return $this->belongsTo(ProdutoColecao::class);
     }
 
+    public function getUltimaCompraAttribute(){
+        return ProdutoCompra::where('produto_id', $this->id)
+            ->orderBy('id', 'desc')
+            ->first(); 
+    }
+
 
 
 
