@@ -154,6 +154,13 @@ class authController extends Controller {
         return response()->json(compact('users_count', 'users'));
     }
 
+    //mostra dados de um usuario
+    public function show_user(Request $request) {
+        $user = User::find_uuid($request->uuid);
+        $user_endereco = $user->endereco;
+        return response()->json(compact('user', 'user_endereco'));
+    }
+
 
 
 
