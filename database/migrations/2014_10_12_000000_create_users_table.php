@@ -32,7 +32,7 @@ class CreateUsersTable extends Migration
             $table->text('obs')->nullable();
             $table->string('status_spc')->nullable();
             $table->integer('role')->default(3)->comment('1-admin | 2-revendedor | 3 - usuario do e-comerce');
-            $table->smallInteger('status')->default(0)->comment('0-aguardando aprovacao | 1- ativado | 2- reprovado');
+            $table->smallInteger('status')->default(0)->comment('0-aguardando aprovacao | 1- ativado | 2- reprovado | 3- bloqueado');
             $table->timestamps();
             $table->softDeletes();
 
