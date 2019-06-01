@@ -8,6 +8,9 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Models\Endereco;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeMail;
+
 class ClienteController extends Controller
 {
     public function index() {
@@ -21,12 +24,14 @@ class ClienteController extends Controller
 
     public function store(Request $request) {
         $endereco = Endereco::create($request->endereco);
+        $password = $request->cliente["password"] ?? rand(333333, 777777);
         $cliente = $request->cliente;
         $cliente['endereco_id'] = $endereco->id;
-        $cliente["password"] = is_null($request->cliente["password"]) ? bcrypt(rand(333333, 777777)) : bcrypt($request->cliente["password"]);
+        $cliente["password"] = bcrypt($password);
         
         $user = User::create($cliente);
         $user->endereco;
+        Mail::to($to)->send(new WelcomeMail($user, $password));
         return response()->json(compact('user'));
     }
 
