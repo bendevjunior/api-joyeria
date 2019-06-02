@@ -11,6 +11,7 @@ Route::get('produto/categoria/show/{uuid}', "API\V1\ProdutoController@categoria_
 Route::get('produto/categoria/list', "API\V1\ProdutoController@categoria_index");
 Route::get('endereco/busca-estado/', "API\V1\\EnderecoController@busca_estado");
 Route::get('endereco/busca-cidade/', "API\V1\\EnderecoController@busca_cidade");
+Route::get('colecao-com-produto/list', "API\V1\ProdutoController@colecao_com_produto_list");
 
 Route::get('produto/colecao/show/{nome}', "API\V1\ProdutoController@colecao_produto");
 Route::get('produto/colecao/list', "API\V1\ProdutoController@colecao_index");
