@@ -175,4 +175,10 @@ class ProdutoController extends Controller
         $qnt = $produto->count();
         return response()->json(compact('qnt', 'produto'));
     }
+
+    public function colecao_com_produto_list()
+    {
+        $productColection = ProdutoColecao::where('status', 1)->with('produto')->get();
+        return response()->json(compact('productColection'));
+    }
 }
