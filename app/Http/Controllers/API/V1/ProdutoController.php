@@ -24,6 +24,12 @@ class ProdutoController extends Controller
         }
         return response()->json(compact('produtos'));
     }
+    public function desabilita(Request $request) {
+        $produto = Produto::find_uuid($request->uuid);
+        $produto->status = 0;
+        $produto->update();
+        return response()->json(['success' => 'produto desabilitado com sucesso']);
+    }
     public function store(Request $request)
     {
 

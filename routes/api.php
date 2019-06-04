@@ -28,6 +28,7 @@ Route::group([ 'cors','prefix' => 'fornecedor'], function () {
 
 Route::group([ 'cors', 'prefix' => 'produto'], function () {
     Route::post('store', "API\V1\ProdutoController@store");
+    Route::post('desabilita', "API\V1\ProdutoController@desabilita");
     Route::post('foto/store', "API\V1\ProdutoController@store_foto");
     Route::post('store_update', "API\V1\ProdutoController@store_update_fornecedor");
     Route::delete('foto/delete', "API\V1\ProdutoController@destroy_foto");
