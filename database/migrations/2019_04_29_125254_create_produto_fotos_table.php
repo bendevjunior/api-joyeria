@@ -17,7 +17,7 @@ class CreateProdutoFotosTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('produto_id');
             $table->uuid('uuid');
-            $table->text('url')->nullable();
+            $table->longText('url')->nullable();
             
             $table->foreign('produto_id')->references('id')->on('produtos');
         });
