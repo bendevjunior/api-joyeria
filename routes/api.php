@@ -19,13 +19,13 @@ Route::get('produto/categoria/show/name/{nome}', "API\V1\ProdutoController@categ
 Route::post('cliente/store', 'API\V1\ClienteController@store');
 
 
-Route::group([ 'cors','prefix' => 'fornecedor'], function () {
+Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'fornecedor'], function () {
     Route::post('store', "API\V1\FornecedorController@store");
     Route::get('show', "API\V1\FornecedorController@show");
     Route::post('update', "API\V1\FornecedorController@update");
 });
 
-Route::group([ 'cors', 'prefix' => 'produto'], function () {
+Route::group(['middleware' => 'auth:api', 'cors', 'prefix' => 'produto'], function () {
     Route::post('store', "API\V1\ProdutoController@store");
     Route::post('desabilita/{uuid}', "API\V1\ProdutoController@desabilita");
     Route::post('foto/store', "API\V1\ProdutoController@store_foto");
@@ -33,17 +33,17 @@ Route::group([ 'cors', 'prefix' => 'produto'], function () {
     Route::delete('foto/delete', "API\V1\ProdutoController@destroy_foto");
 });
 
-Route::group(['cors','prefix' => 'produto/compra'], function () {
+Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/compra'], function () {
     Route::post('store', "API\V1\ProdutoCompraController@store");
 });
 
-Route::group(['cors','prefix' => 'produto/categoria'], function () {
+Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/categoria'], function () {
     Route::post('store', "API\V1\ProdutoController@categoria_store");
     Route::put('update', "API\V1\ProdutoController@categoria_update");
     
 });
 
-Route::group(['cors','prefix' => 'produto/colecao'], function () {
+Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/colecao'], function () {
     Route::post('store', "API\V1\ProdutoController@colecao_store");
     Route::put('update', "API\V1\ProdutoController@colecao_update");
 });
@@ -52,30 +52,29 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'API\V1\authController@login');
     Route::post('register', 'API\V1\authController@register');
   
+    Route::group(['middleware' => 'auth:api'], function() {
         Route::get('logout', 'API\V1\authController@logout');
         Route::get('user', 'API\V1\authController@user');
         Route::get('user/list', 'API\V1\authController@user_list');
         Route::post('ativar-conta', "API\V1\authController@ativar_conta");
         Route::get('show/user/{uuid}', "API\V1\authController@show_user");
+    });
    
 });
 
-Route::group(['cors','prefix' => 'dashboard'], function () {
+Route::group(['middleware' => 'auth:api','cors','prefix' => 'dashboard'], function () {
     Route::get('count/{mes?}/{ano?}', "API\V1\DashboardController@dashboard_count");
 });
 
-Route::group(['cors','prefix' => 'cliente'], function () {
+Route::group(['middleware' => 'auth:api','cors','prefix' => 'cliente'], function () {
     Route::put('update', 'API\V1\ClienteController@update');
     Route::get('lista', 'API\V1\ClienteController@index');
 });
 
-Route::group(['cors','prefix' => 'vendas'], function () {
+Route::group(['middleware' => 'auth:api','cors','prefix' => 'vendas'], function () {
     Route::get('consignado/lista', 'API\V1\ConsignadoController@index');
     Route::post('consignado/store', 'API\V1\ConsignadoController@store');
     Route::post('consignado/complete', 'API\V1\ConsignadoController@venda_consignado');
 
 });
 
-Route::get('teste', function () {
-    return response()->json(auth()->user());
-})->middleware('auth:api');
