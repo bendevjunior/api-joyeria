@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
-
+use Illuminate\Support\Facades\Route;
 
 Route::get('produto/show', "API\V1\ProdutoController@show");
 Route::get('produto/{nome}', "API\V1\ProdutoController@mostrar");
@@ -76,3 +75,7 @@ Route::group(['cors','prefix' => 'vendas'], function () {
     Route::post('consignado/complete', 'API\V1\ConsignadoController@venda_consignado');
 
 });
+
+Route::get('teste', function () {
+    return response()->json(auth()->user());
+})->middleware('auth:api');
