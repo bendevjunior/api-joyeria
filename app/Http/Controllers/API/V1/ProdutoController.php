@@ -41,6 +41,7 @@ class ProdutoController extends Controller
         $produto['colecao_id'] = $colecao->id;
         $produto = Produto::create($produto);
         $produto->numero_codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
+        $produto->codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
         $produto->save();
         $produto = Produto::find($produto->id);
         if ($request["fotos"] != null) {
