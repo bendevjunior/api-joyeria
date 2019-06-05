@@ -56,6 +56,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::group(['middleware' => 'auth:api'], function() {
         Route::get('logout', 'API\V1\authController@logout');
         Route::get('user', 'API\V1\authController@user');
+        Route::put('user/update', 'API\V1\authController@user_update');
         Route::get('user/list', 'API\V1\authController@user_list');
         Route::post('ativar-conta', "API\V1\authController@ativar_conta");
         Route::get('show/user/{uuid}', "API\V1\authController@show_user");

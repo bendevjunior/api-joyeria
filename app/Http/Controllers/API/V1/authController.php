@@ -162,6 +162,22 @@ class authController extends Controller {
         return response()->json(compact('user', 'user_endereco'));
     }
 
+    //update user
+    public function user_update(Request $request) 
+    {
+        
+        $user = User::find_uuid($request->cliente["uuid"]);
+        $userUpdateData = $request->cliente;
+        if($userUpdateData["password"] != null) {
+            $userUpdateData["password"] = bcrypt($userUpdateData["password"]);
+        }
+        $user->update($userUpdateData);
+        $endereco = $user->endereco;
+        $endereco->update($request->endereco);
+        return response()->json($user);
+        
+    }
+
 
 
 
