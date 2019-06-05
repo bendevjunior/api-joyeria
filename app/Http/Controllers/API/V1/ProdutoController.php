@@ -86,6 +86,21 @@ class ProdutoController extends Controller
         return response()->json(compact('produto'));
     }
 
+    public function show_administrativo(Request $request)
+    {
+        if (is_null($request->produto_uuid)) {
+            //list all
+            $produto = Produto::with('foto', 'categoria', 'colecao')->get();
+        } else {
+            $produto = Produto::find_uuid($request->produto_uuid);
+            $produto_fornecedor = $produto->fornecedores;
+            $produto_foto = $produto->foto;
+            $categoria = $produto->categoria;
+            $colecao = $produto->colecao;
+        }
+        return response()->json(compact('produto'));
+    }
+
 
     public function  mostrar(Request $request)
     {
