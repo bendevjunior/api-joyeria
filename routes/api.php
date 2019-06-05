@@ -19,6 +19,16 @@ Route::get('produto/categoria/show/name/{nome}', "API\V1\ProdutoController@categ
 Route::post('cliente/store', 'API\V1\ClienteController@store');
 
 
+
+
+Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'venda'], function () {
+    Route::post('store', 'API\V1\VendaController@store');
+    Route::put('update', 'API\V1\VendaController@update');
+    Route::delete('destroy/{uuid}', 'API\V1\VendaController@destroy');
+
+    Route::get('concluir/cliente/{cliente_uuid}', 'API\V1\VendaController@complete_cliente');
+});
+
 Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'fornecedor'], function () {
     Route::post('store', "API\V1\FornecedorController@store");
     Route::get('show', "API\V1\FornecedorController@show");
