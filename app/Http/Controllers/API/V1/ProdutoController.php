@@ -207,9 +207,8 @@ class ProdutoController extends Controller
     //update
     public function update(Request $request)
     {
-        $data = $request->produto;
-        $produto = Produto::find_uuid($data['uuid']);
-        $produto->update($data);
+        $produto = Produto::find_uuid($request->uuid);
+        $produto->update($request->all());
         return response()->json($produto);
     }
 }
