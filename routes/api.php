@@ -22,7 +22,7 @@ Route::post('cliente/store', 'API\V1\ClienteController@store');
 Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'fornecedor'], function () {
     Route::post('store', "API\V1\FornecedorController@store");
     Route::get('show', "API\V1\FornecedorController@show");
-    Route::post('update', "API\V1\FornecedorController@update");
+    Route::put('update', "API\V1\FornecedorController@update");
 });
 
 Route::group(['middleware' => 'auth:api', 'cors', 'prefix' => 'produto'], function () {
