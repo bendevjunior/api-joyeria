@@ -165,7 +165,6 @@ class authController extends Controller {
     //update user
     public function user_update(Request $request) 
     {
-        
         $user = User::find_uuid($request->cliente["uuid"]);
         $userUpdateData = $request->cliente;
         if($userUpdateData["password"] != null) {
@@ -175,7 +174,6 @@ class authController extends Controller {
         $endereco = $user->endereco;
         $endereco->update($request->endereco);
         return response()->json($user);
-        
     }
 
 
