@@ -32,6 +32,7 @@ Route::group(['middleware' => 'auth:api', 'cors', 'prefix' => 'produto'], functi
     Route::post('store_update', "API\V1\ProdutoController@store_update_fornecedor");
     Route::delete('foto/delete', "API\V1\ProdutoController@destroy_foto");
     Route::get('show/administrativo', 'API\V1\ProdutoController@show_administrativo');
+    Route::put('update', "API\V1\ProdutoController@update");
 });
 
 Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/compra'], function () {

@@ -203,4 +203,13 @@ class ProdutoController extends Controller
         $productColection = ProdutoColecao::where('status', 1)->with('produto')->get();
         return response()->json(compact('productColection'));
     }
+
+    //update
+    public function update(Request $request)
+    {
+        $data = $request->produto;
+        $produto = Produto::find_uuid($data['uuid']);
+        $produto->update($data);
+        return response()->json($produto);
+    }
 }
