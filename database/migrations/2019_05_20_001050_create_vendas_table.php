@@ -25,7 +25,12 @@ class CreateVendasTable extends Migration
             $table->decimal('preco_do_desconto', 11, 2)->nullable();
             $table->date('data_pagamento')->nullable();
             $table->smallInteger('status')->default(0)->comment('0- em aberto | 1- finalizado');
-    
+            
+            $table->string('bf_code')->nullable()->comment('codigo do boletofacil');
+            $table->string('bf_reference')->nullable()->comment('reference do boletofacil');
+            $table->string('bf_link')->nullable()->comment('link do boletofacil');
+            $table->string('bf_barcode')->nullable()->comment('link do boletofacil');
+
             $table->timestamps();
             $table->softDeletes();
             //Colocar dados do boleto

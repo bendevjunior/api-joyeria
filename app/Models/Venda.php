@@ -17,7 +17,8 @@ class Venda extends Model
     protected $fillable = [
         'uuid', 'produto_id', 'cliente_id',
         'qnt', 'preco', 'preco_final', 'preco_do_desconto', 
-        'data_pagamento', 'status'
+        'data_pagamento', 'status', 'bf_code', 'bf_reference',
+        'bf_link', 'bf_barcode'
     ];
 
     
