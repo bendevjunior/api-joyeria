@@ -87,7 +87,9 @@ class VendaController extends Controller
     //update boletos e rotorna os boletos
     private function generate_boletos($vendas, $request)
     {
-        $payer = new Payer("Teste nome", "428.338.578-61");
+        $cliente = $vendas[0]->cliente;
+        $valor = $vendas->sum('preco_final');
+        $payer = new Payer($cliente->nome, $cliente->cpf_cnpj);
         $charge = new Charge('Descricao', 'referencia', 10.00, $request->data_vencomento); 
         $juno = new JunoService();
         $response = $juno->create_charge($payer, $charge);

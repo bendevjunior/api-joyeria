@@ -32,7 +32,7 @@ Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'venda'], function 
 Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'fornecedor'], function () {
     Route::post('store', "API\V1\FornecedorController@store");
     Route::get('show', "API\V1\FornecedorController@show");
-    Route::put('update', "API\V1\FornecedorController@update");
+    Route::post('update/{uuid}', "API\V1\FornecedorController@update");
 });
 
 Route::group(['middleware' => 'auth:api', 'cors', 'prefix' => 'produto'], function () {

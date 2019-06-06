@@ -39,9 +39,9 @@ class FornecedorController extends Controller {
         return response()->json(compact('fornecedor'));
     }
 
-    public function update (Request $request) {
+    public function update (Request $request, $uuid) {
         //status = 0-desativado | 1-ativado
-        $fornecedor = Fornecedor::find_uuid($request->uuid);  
+        $fornecedor = Fornecedor::find_uuid($uuid);  
         $endereco = Endereco::find($fornecedor->endereco_id);
         
         $endereco->update($request->all());
