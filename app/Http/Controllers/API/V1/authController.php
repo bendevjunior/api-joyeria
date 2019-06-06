@@ -171,8 +171,8 @@ class authController extends Controller {
             $userUpdateData["password"] = bcrypt($userUpdateData["password"]);
         }
         $user->update($userUpdateData);
-        $endereco = $user->endereco;
-        $endereco->update($request->endereco);
+      //  $endereco = $user->endereco;
+       // $endereco->update($request->endereco);
         return response()->json($user);
     }
 
