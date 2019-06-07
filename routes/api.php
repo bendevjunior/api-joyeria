@@ -19,7 +19,8 @@ Route::get('produto/categoria/show/name/{nome}', "API\V1\ProdutoController@categ
 Route::post('cliente/store', 'API\V1\ClienteController@store');
 
 
-
+Route::get('slider/todos', "API\V1\SliderController@index");
+Route::get('slider/unico/{id}', "API\V1\SliderController@show");
 
 Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'venda'], function () {
     Route::post('store', 'API\V1\VendaController@store');
@@ -58,6 +59,12 @@ Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/categoria']
 Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/colecao'], function () {
     Route::post('store', "API\V1\ProdutoController@colecao_store");
     Route::put('update', "API\V1\ProdutoController@colecao_update");
+});
+
+Route::group(['middleware' => 'auth:api','cors','prefix' => 'slider'], function () {
+    Route::post('inserir', 'API\V1\SliderController@store');
+    Route::put('atualizar', 'API\V1\SliderController@update');
+    Route::delete('deletar', 'API\V1\SliderController@destroy');
 });
 
 Route::group(['prefix' => 'auth'], function () {
