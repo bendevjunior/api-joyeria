@@ -26,6 +26,7 @@ class CreateProdutosTable extends Migration
             $table->integer('qnt_min')->default(0);
             $table->string('lote');
             $table->decimal('valor_bruto', 11, 2)->nullable();
+            $table->decimal('caneta_rodio', 11, 2);
             $table->decimal('valor_banho', 11, 2)->nullable();
             $table->decimal('valor_venda', 11, 2)->nullable();
             $table->decimal('peso', 11, 2)->nullable();

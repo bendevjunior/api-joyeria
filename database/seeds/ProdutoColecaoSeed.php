@@ -12,12 +12,5 @@ class ProdutoColecaoSeed extends Seeder
      */
     public function run()
     {
-        ProdutoColecao::create([
-            'nome' => 'Colecao A'
-        ]);
-
-        ProdutoColecao::create([
-            'nome' => 'Colecao B'
-        ]);
     }
 }

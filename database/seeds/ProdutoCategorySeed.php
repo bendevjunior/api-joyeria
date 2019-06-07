@@ -12,8 +12,5 @@ class ProdutoCategorySeed extends Seeder
      */
     public function run()
     {
-        ProductCategory::create([
-            'nome' => 'Categoria A'
-        ]);
     }
 }
