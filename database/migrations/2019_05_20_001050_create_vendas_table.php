@@ -18,6 +18,7 @@ class CreateVendasTable extends Migration
             $table->uuid('uuid');
             $table->integer('produto_id')->unsigned();
             $table->integer('cliente_id')->unsigned();
+            $table->integer('fluxo_financeiro_id')->nullable()->comment('se gerou cobranca colocar aqui');
             $table->integer('consignado_id')->unsigned()->nullable();
             $table->integer('qnt');
             $table->decimal('preco', 11, 2)->nullable();
@@ -26,10 +27,7 @@ class CreateVendasTable extends Migration
             $table->date('data_pagamento')->nullable();
             $table->smallInteger('status')->default(0)->comment('0- em aberto | 1- finalizado');
             
-            $table->string('bf_code')->nullable()->comment('codigo do boletofacil');
-            $table->string('bf_reference')->nullable()->comment('reference do boletofacil');
-            $table->string('bf_link')->nullable()->comment('link do boletofacil');
-            $table->string('bf_barcode')->nullable()->comment('link do boletofacil');
+            
 
             $table->timestamps();
             $table->softDeletes();
