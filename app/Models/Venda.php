@@ -18,7 +18,7 @@ class Venda extends Model
         'uuid', 'produto_id', 'cliente_id',
         'qnt', 'preco', 'preco_final', 'preco_do_desconto', 
         'data_pagamento', 'status', 'bf_code', 'bf_reference',
-        'bf_link', 'bf_barcode'
+        'bf_link', 'bf_barcode', 'fluxo_financeiro_id'
     ];
 
     
@@ -48,5 +48,10 @@ class Venda extends Model
 
     public function consignado () {
         return $this->belongsTo(Consignado::class);
+    }
+
+    public function fluxo_financeiro()
+    {
+        return $this->hasMany(FluxoFinanceiro::class, 'venda_id');
     }
 }

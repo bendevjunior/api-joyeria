@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'venda'], function 
     Route::put('update', 'API\V1\VendaController@update');
     Route::delete('destroy/{uuid}', 'API\V1\VendaController@destroy');
 
-    Route::get('concluir/cliente/{cliente_uuid}', 'API\V1\VendaController@complete_cliente');
+    Route::post('concluir/cliente/{cliente_uuid}', 'API\V1\VendaController@complete_cliente');
 });
 
 Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'fornecedor'], function () {
