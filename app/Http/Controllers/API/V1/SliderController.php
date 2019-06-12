@@ -70,7 +70,7 @@ class SliderController extends Controller
      */
     public function destroy(Request $request)
     {
-       $slider = Slider::find($id);
+       $slider = Slider::find($request->id);
        $slider->delete();
         return response()->json(['sucesso' => 'Slide deletada com sucesso']);
     }
