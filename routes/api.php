@@ -64,7 +64,7 @@ Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/colecao'], 
 Route::group(['middleware' => 'auth:api','cors','prefix' => 'slider'], function () {
     Route::post('inserir', 'API\V1\SliderController@store');
     Route::put('atualizar', 'API\V1\SliderController@update');
-    Route::delete('deletar', 'API\V1\SliderController@destroy');
+    Route::put('deletar', 'API\V1\SliderController@destroy');
     Route::get('get_adm', 'API\V1\SliderController@index_adm');
 });
 
