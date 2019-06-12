@@ -11,6 +11,6 @@ class Slider extends Model
     protected $fillable = ['img', 'texto', 'titulo', 'url','visivel'];
     
     protected $hidden = [
-        'id', "created_at", "updated_at", "deleted_at"
+      "created_at", "updated_at", "deleted_at"
     ];
 }
