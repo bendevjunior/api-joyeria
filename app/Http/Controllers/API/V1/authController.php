@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegisterMail;
 
 
 use App\User;
@@ -34,15 +36,21 @@ class authController extends Controller {
         $request->merge(['endereco_id'=>$endereco->id]);
         $pass_generate = rand(3333333, 7777777);
         if($request->password == null) {
-            $request->merge(['passwors'=>bcrypt($pass_generate)]);
+            $password = $pass_generate;
         } else {
-            $request->merge(['password'=> bcrypt($request->password)]);
+            $password = $request->password;
         }
+        $request->merge(['password'=> bcrypt($password)]);
+        
         if($request->ativo == 1) {
             $request->merge(['status'=>1]);
         }
         $user = User::create($request->all());
         $user = User::find($user->id);
+        //#envia email
+        $mail = Mail::to($$user->email)
+			->queue(new RegisterMail($user, $password));
+
         $endereco = $user->endereco;
         $endereco_cidade = $user->endereco->cidade->nome;
         $endereco_estado = $user->endereco->estado->nome;
