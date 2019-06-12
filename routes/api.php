@@ -65,6 +65,7 @@ Route::group(['middleware' => 'auth:api','cors','prefix' => 'slider'], function 
     Route::post('inserir', 'API\V1\SliderController@store');
     Route::put('atualizar', 'API\V1\SliderController@update');
     Route::delete('deletar', 'API\V1\SliderController@destroy');
+    Route::delete('get_adm', 'API\V1\SliderController@index_adm');
 });
 
 Route::group(['prefix' => 'auth'], function () {

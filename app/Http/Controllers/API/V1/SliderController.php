@@ -18,6 +18,11 @@ class SliderController extends Controller
         $slider = Slider::where('visivel', 1)->get();
         return response()->json(compact('slider'));
     }
+    public function index_adm()
+    {
+        $slider = Slider::get();
+        return response()->json(compact('slider'));
+    }
 
     /**
      * Store a newly created resource in storage.
