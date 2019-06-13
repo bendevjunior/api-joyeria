@@ -12,6 +12,7 @@ use App\User;
 use App\Service\Juno\JunoService;
 use App\Service\Juno\Support\Charge;
 use App\Service\Juno\Support\Payer;
+use App\Models\FluxoFinanceiro;
 
 class VendaController extends Controller
 {
@@ -23,7 +24,7 @@ class VendaController extends Controller
     public function complete_cliente(Request $request, $cliente_uuid)
     {
         $venda = Venda::where('cliente_id', auth()->user()->id)->get();
-        if($request->meio_pagamento) {
+        if($request->meio_pagamento == 0) {
             $this->generate_boletos($venda, $request);
         } else {
 
@@ -54,9 +55,9 @@ class VendaController extends Controller
             $cliente_id = $cliente->id;
         } else {
             $cliente_id = auth()->user()->id;
-            $cliente = auth()->iser();
+            $cliente = auth()->user();
         }
-
+        
         if(auth()->user() != null && auth()->user()->role != 1) {
             $data['preco_do_desconto'] = 0;
         }
@@ -71,7 +72,7 @@ class VendaController extends Controller
             'status' => 0
         ]);
 
-        return response()->json(compact($venda));
+        return response()->json(compact('venda'));
     }
 
 
@@ -95,16 +96,28 @@ class VendaController extends Controller
         $cliente = $vendas[0]->cliente;
         $valor = $vendas->sum('preco_final');
         $payer = new Payer($cliente->nome, $cliente->cpf_cnpj);
-        $charge = new Charge('Descricao', 'referencia', $valor/$request->parcelas, $request->data_vencomento); 
+        $charge = new Charge('Descricao', 'referencia', 10.00, $request->data_vencimento);
         $charge->totalAmount = $valor;
+ 
         $juno = new JunoService();
-        $response = $juno->create_charge($payer, $charge);
-        $response = $juno->generate_boleto();
+        //$response = $juno->create_charge($payer, $charge);
+        //$response = $juno->generate_boleto();
         
-        dd($response->data->charges);
+        //dd($response->data->charges);
 
         foreach($vendas as $venda) {
-            $venda->data_pagamento = $request->data_vencomento;
+            $venda->data_pagamento = $request->data_vencimento;
+            FluxoFinanceiro::create([
+                'cliente_id' => $cliente->id,
+                'venda_id' => $venda->id,
+                'descricao' => "Venda",
+                'data_vencimento' => $request->data_vencimento,
+                'valor_da_parcela' => $valor/$request->parcelas,
+                'valor_total_venda'=>$valor,
+                //'parcela_atual' => ,
+                'total_parcelas' => $request->parcelas,
+            'status'
+            ]);
         }
     }
 }

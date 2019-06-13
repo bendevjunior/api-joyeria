@@ -66,7 +66,6 @@ class JunoService
         $body['creditCardStore'] = $this->charge->creditCardStore;
         $body['creditCardId'] = $this->charge->creditCardId;
         $body['paymentAdvance'] = $this->charge->paymentAdvance;
-
         $request = $client->request("POST",$this->url_create_charge,  ['form_params'=>$body]);
         $json =  $request->getBody()->getContents(); // retorno em json
         return json_decode($json);
