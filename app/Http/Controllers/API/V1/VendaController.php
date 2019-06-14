@@ -13,6 +13,7 @@ use App\Service\Juno\JunoService;
 use App\Service\Juno\Support\Charge;
 use App\Service\Juno\Support\Payer;
 use App\Models\FluxoFinanceiro;
+use App\Models\ProdutoVenda;
 
 class VendaController extends Controller
 {
@@ -62,16 +63,30 @@ class VendaController extends Controller
             $data['preco_do_desconto'] = 0;
         }
 
-        $venda = Venda::create([
-            'produto_id' => $produto->id, 
-            'cliente_id' => $cliente_id,
-            'qnt' => $data['qnt'], 
-            'preco' => $produto->valor_venda * $data['qnt'], 
-            'preco_final' => ($produto->valor_venda * $data['qnt']) - $data['preco_do_desconto'], 
-            'preco_do_desconto' => $data['preco_do_desconto'], 
-            'status' => 0
-        ]);
+        $preco_desconto = $data['preco_do_desconto'] ?? 0;
+        $existVenda = Venda::where('cliente_id', $cliente_id)->where('status', 0)->get();
+        if ($existVenda->count() == 0) {
+            $venda = Venda::create([
+                'cliente_id' => $cliente_id,
+                'preco' => 0,
+                'preco_final' => 0,
+                'preco_do_desconto' => 0,
+                'status' => 0
+            ]);
+        } else {
+            $venda = $existVenda[0];
+        }
 
+        ProdutoVenda::create([
+            'qnt' => $request->qnt,
+            'venda_id' => $venda->id,
+            'qnt' => $data['qnt'],
+            'cliente_id' => $cliente_id,
+            'valor_desconto' => $preco_desconto,
+            'valor' => $produto->valor_venda * $data['qnt']
+        ]);
+        $venda->calcula_valor();
+        $venda = Venda::find($venda->id);
         return response()->json(compact('venda'));
     }
 

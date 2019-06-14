@@ -54,4 +54,19 @@ class Venda extends Model
     {
         return $this->hasMany(FluxoFinanceiro::class, 'venda_id');
     }
+
+
+
+
+
+    public function calcula_valor()
+    {
+        $ProdutoVenda = ProdutoVenda::where('venda_id', $this->id)->get();
+        $venda = Venda::find($this->id);
+        $desconto = $ProdutoVenda->sum('valor_desconto');
+        //$venda->preco = $ProdutoVenda->sum('valor');
+        $venda->preco_do_desconto = $desconto;
+        $venda->preco_final = $ProdutoVenda->sum('valor') - $ProdutoVenda->sum('valor_desconto');
+        $venda->save();
+    }
 }
