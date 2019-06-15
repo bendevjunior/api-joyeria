@@ -1,0 +1,1 @@
+<p>Nome: {{ $user->nome }}</p>
