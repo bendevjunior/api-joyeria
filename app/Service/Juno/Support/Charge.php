@@ -27,11 +27,13 @@ class Charge
     public $creditCardId; // Identificação única do cartão de crédito previamente armazenado | Formato: Código de identificação do cartão de crédito
     public $paymentAdvance; // Define se o pagamento via cartão de crédito será antecipado | Formato: true ou false | Valor padrão: false
 
-    function __construct(String $description, String $reference, $amount, $dueDate) 
+    function __construct(String $description, String $reference, $amount = null, $dueDate) 
     {
         $this->description  = $description;
         $this->reference    = $reference;
-        $this->amount       = $amount;
+        if ($amount != null) {
+            $this->amount       = $amount;
+        }
         $this->dueDate      = $dueDate;
     }
 }

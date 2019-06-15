@@ -55,6 +55,9 @@ class Venda extends Model
         return $this->hasMany(FluxoFinanceiro::class, 'venda_id');
     }
 
+    public function produto_venda() {
+        return $this->hasMany(ProdutoVenda::class, 'venda_id');
+    }
 
 
 

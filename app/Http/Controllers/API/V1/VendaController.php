@@ -106,33 +106,24 @@ class VendaController extends Controller
     }
 
     //update boletos e rotorna os boletos
-    private function generate_boletos($vendas, $request)
+    private function generate_boletos($venda, $request)
     {
-        $cliente = $vendas[0]->cliente;
-        $valor = $vendas->sum('preco_final');
+        $produto_venda = $venda->produto_venda;
+        $cliente = $venda->cliente;
+        $valor = $venda->preco_final;
         $payer = new Payer($cliente->nome, $cliente->cpf_cnpj);
-        $charge = new Charge('Descricao', 'referencia', 10.00, $request->data_vencimento);
+        $charge = new Charge('Boleto de cobrança Joyeria da venda #'. $venda->id, $produto_venda->id, null, $request->data_vencimento);
         $charge->totalAmount = $valor;
+        $charge->amount = $valor/$request->parcelas;
+        $charge->installments = $request->parcelas;
  
         $juno = new JunoService();
-        //$response = $juno->create_charge($payer, $charge);
+        $response = $juno->create_charge($payer, $charge);
         //$response = $juno->generate_boleto();
         
         //dd($response->data->charges);
 
-        foreach($vendas as $venda) {
-            $venda->data_pagamento = $request->data_vencimento;
-            FluxoFinanceiro::create([
-                'cliente_id' => $cliente->id,
-                'venda_id' => $venda->id,
-                'descricao' => "Venda",
-                'data_vencimento' => $request->data_vencimento,
-                'valor_da_parcela' => $valor/$request->parcelas,
-                'valor_total_venda'=>$valor,
-                //'parcela_atual' => ,
-                'total_parcelas' => $request->parcelas,
-            'status'
-            ]);
-        }
+        
+        
     }
 }
