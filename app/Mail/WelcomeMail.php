@@ -31,7 +31,7 @@ class WelcomeMail extends Mailable
      */
     public function build()
     {
-        return $this->from('contato@joyeria.com.br')
+        return $this->from('contato@joyeria.com.br', 'Contato Joyeria')
                 ->view('templates.mail.welcome', [
                     'user' => $this->user,
                     'password' => $this->password
