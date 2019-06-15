@@ -1,3 +1,3 @@
-<p>TEXTO</p>
-<p>{{ $user->name }}</p>
-<p>{{ $password ?? 'Sem senha informada' }}</p>
+<p>Cadastro efetuado com sucesso!!</p>
+<p>seu usuario:{{ $user->email }}</p>
+<p>sua senha{{ $password ?? 'Sem senha informada' }}</p>
