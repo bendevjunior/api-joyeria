@@ -31,6 +31,7 @@ class ClienteController extends Controller
         
         $user = User::create($cliente);
         $user->endereco;
+        $to = $user->email;
         //Mail::to($to)->send(new WelcomeMail($user, $password));
         return response()->json(compact('user'));
     }
