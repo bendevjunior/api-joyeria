@@ -18,7 +18,7 @@ class WelcomeMail extends Mailable
      *
      * @return void
      */
-    public function __construct(User $user, String $password = null)
+    public function __construct($user,  $password = null)
     {
         $this->user = $user;
         $this->password = $password;
@@ -31,7 +31,7 @@ class WelcomeMail extends Mailable
      */
     public function build()
     {
-        return $this->from('to@email.com')
+        return $this->from('contato@joyeria.com.br')
                 ->view('templates.mail.welcome', [
                     'user' => $this->user,
                     'password' => $this->password
