@@ -145,7 +145,5 @@ class VendaController extends Controller
         $venda->status = 1;
         $venda->save();
         return response()->json(['Venda encerrada com sucesso']);
-        
-        
     }
 }

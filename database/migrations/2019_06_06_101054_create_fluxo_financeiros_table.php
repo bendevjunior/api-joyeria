@@ -16,8 +16,8 @@ class CreateFluxoFinanceirosTable extends Migration
         Schema::create('fluxo_financeiros', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid');
-            $table->integer('cliente_id')->unsigned();
-            $table->integer('venda_id')->unsigned();
+            $table->integer('cliente_id')->unsigned()->nullable();
+            $table->integer('venda_id')->unsigned()->nullable();
             $table->string('descricao');
             $table->date('data_vencimento');
             $table->decimal('valor_da_parcela', 11, 2)->nullable();
