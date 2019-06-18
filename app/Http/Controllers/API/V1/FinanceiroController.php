@@ -20,4 +20,11 @@ class FinanceiroController extends Controller
         $fluxo_financeiro =  FluxoFinanceiro::create($request->all());
         return response()->json($fluxo_financeiro);
     }
+
+    public function update(Request $request, $fluxo_financeiro_uuid)
+    {
+        $fluxo_financeiro = FluxoFinanceiro::find_uuid($fluxo_financeiro_uuid);
+        $fluxo_financeiro->update($request->all());
+        return response()->json($fluxo_financeiro);
+    }
 }
