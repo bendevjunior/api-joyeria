@@ -27,4 +27,12 @@ class FinanceiroController extends Controller
         $fluxo_financeiro->update($request->all());
         return response()->json($fluxo_financeiro);
     }
+
+    public function index($inicio, $fim)
+    {
+        $fluxoFinanceiro = FluxoFinanceiro::where('created_at', '>=', $inicio)
+            ->where('created_at', '<=', $fim)
+            ->with('cliente', 'venda')->get();
+        return response()->json($fluxoFinanceiro);
+    }
 }

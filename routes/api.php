@@ -103,6 +103,7 @@ Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'financeiro'], func
 
     Route::post('store', "API\V1\FinanceiroController@store");
     Route::put('update/{fluxo_financeiro_uuid}', "API\V1\FinanceiroController@update");
-
+    Route::get('filter/{inicio}/{fim}', "API\V1\FinanceiroController@index");
+    
 
 });
