@@ -79,6 +79,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('user/list', 'API\V1\authController@user_list');
         Route::post('ativar-conta', "API\V1\authController@ativar_conta");
         Route::get('show/user/{uuid}', "API\V1\authController@show_user");
+        Route::delete('destroy/{uuid}', "API\V1\authController@destroy");
     });
    
 });
