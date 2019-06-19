@@ -177,7 +177,7 @@ class authController extends Controller {
     {
         $user = User::find_uuid($request->cliente["uuid"]);
         $userUpdateData = $request->cliente;
-        if(is_null($userUpdateData["password"])) {
+        if(!is_null($userUpdateData["password"])) {
             $userUpdateData["password"] = bcrypt($userUpdateData["password"]);
         }
         $user->update($userUpdateData);
