@@ -35,12 +35,12 @@ class ProdutoController extends Controller
 
 
         $produto = $request["produto"];
-        $categoria = ProductCategory::find_uuid($produto['categoria_uuid']);
-        $colecao = ProdutoColecao::find_uuid($produto['colecao_uuid']);
-        if(is_null($colecao)){
+        if($produto['categoria_uuid'] != null){
+            $colecao = ProdutoColecao::find_uuid($produto['colecao_uuid']);
             $produto['colecao_id'] = $colecao->id;
         }
-        if(is_null($categoria)) {
+        if($produto['categoria_uuid'] != null) {
+            $categoria = ProductCategory::find_uuid($produto['categoria_uuid']);
             $produto['categoria_id'] = $categoria->id;
         }
         $produto = Produto::create($produto);
@@ -55,7 +55,7 @@ class ProdutoController extends Controller
                     'url' => $foto['foto']
                 ]);
             }
-        }
+        
         $categoria = $produto->categoria;
         $colecao = $produto->colecao;
         return response()->json(compact('produto'));
