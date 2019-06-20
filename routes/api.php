@@ -79,6 +79,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('user/list', 'API\V1\authController@user_list');
         Route::post('ativar-conta', "API\V1\authController@ativar_conta");
         Route::get('show/user/{uuid}', "API\V1\authController@show_user");
+        Route::delete('destroy/{uuid}', "API\V1\authController@destroy");
     });
    
 });
@@ -99,3 +100,11 @@ Route::group(['middleware' => 'auth:api','cors','prefix' => 'vendas'], function 
 
 });
 
+Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'financeiro'], function () {
+
+    Route::post('store', "API\V1\FinanceiroController@store");
+    Route::put('update/{fluxo_financeiro_uuid}', "API\V1\FinanceiroController@update");
+    Route::get('filter/{inicio}/{fim}', "API\V1\FinanceiroController@index");
+    
+
+});

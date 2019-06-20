@@ -14,6 +14,8 @@ use App\Service\Juno\Support\Charge;
 use App\Service\Juno\Support\Payer;
 use App\Models\FluxoFinanceiro;
 use App\Models\ProdutoVenda;
+use Uuid;
+use Carbon\Carbon;
 
 class VendaController extends Controller
 {
@@ -24,7 +26,8 @@ class VendaController extends Controller
      */
     public function complete_cliente(Request $request, $cliente_uuid)
     {
-        $venda = Venda::where('cliente_id', auth()->user()->id)->get();
+        $cliente = User::find_uuid($cliente_uuid);
+        $venda = Venda::where('cliente_id', $cliente->id)->get();
         if($request->meio_pagamento == 0) {
             $this->generate_boletos($venda, $request);
         } else {
@@ -76,7 +79,6 @@ class VendaController extends Controller
         } else {
             $venda = $existVenda[0];
         }
-
         ProdutoVenda::create([
             'qnt' => $request->qnt,
             'venda_id' => $venda->id,
@@ -106,33 +108,42 @@ class VendaController extends Controller
     }
 
     //update boletos e rotorna os boletos
-    private function generate_boletos($vendas, $request)
+    private function generate_boletos($venda, $request)
     {
-        $cliente = $vendas[0]->cliente;
-        $valor = $vendas->sum('preco_final');
-        $payer = new Payer($cliente->nome, $cliente->cpf_cnpj);
-        $charge = new Charge('Descricao', 'referencia', 10.00, $request->data_vencimento);
-        $charge->totalAmount = $valor;
- 
+        $venda = $venda[0];
+        $produto_venda = $venda->produto_venda;
+        $cliente = $venda->cliente;
+        $valor_total = $venda->preco_final;
+        $valor = $valor_total/$request->parcelas;
+        //$payer = new Payer($cliente->nome, $cliente->cpf_cnpj);
+        $payer = new Payer($cliente->nome, '428.338.578-61');
+        $charge = new Charge('Boleto de cobrança Joyeria da venda #'. $venda->id, (string) Uuid::generate(4), null, $request->data_vencimento);
+        $charge->amount = $valor;
+        $charge->installments = $request->parcelas;
         $juno = new JunoService();
-        //$response = $juno->create_charge($payer, $charge);
-        //$response = $juno->generate_boleto();
-        
-        //dd($response->data->charges);
-
-        foreach($vendas as $venda) {
-            $venda->data_pagamento = $request->data_vencimento;
+        $response = $juno->create_charge($payer, $charge);
+        $response = $juno->generate_boleto();
+        $i=1;
+        foreach($response->data->charges as $charge) {
             FluxoFinanceiro::create([
-                'cliente_id' => $cliente->id,
-                'venda_id' => $venda->id,
-                'descricao' => "Venda",
-                'data_vencimento' => $request->data_vencimento,
-                'valor_da_parcela' => $valor/$request->parcelas,
-                'valor_total_venda'=>$valor,
-                //'parcela_atual' => ,
+                'cliente_id'=>$cliente->id,
+                'venda_id'=>$venda->id,
+                'descricao' => 'Venda #'.$venda->id,
+                'data_vencimento'=>Carbon::parse($charge->dueDate)->format('Y-m-d'),
+                'valor_da_parcela'=>$valor,
+                'valor_total_venda'=>$valor_total,
+                'parcela_atual' => $i,
                 'total_parcelas' => $request->parcelas,
-            'status'
+                'bf_code'=>$charge->code,
+                'bf_reference'=>$charge->reference,
+                'bf_link' => $charge->link,
+                'bf_barcode' => $charge->billetDetails->barcodeNumber,
+                'status' => 0
             ]);
+            $i++;
         }
+        $venda->status = 1;
+        $venda->save();
+        return response()->json(['Venda encerrada com sucesso']);
     }
 }

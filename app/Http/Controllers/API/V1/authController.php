@@ -12,6 +12,8 @@ use App\Mail\RegisterMail;
 
 use App\User;
 use App\Models\Endereco;
+use App\Models\Venda;
+use App\Models\FluxoFinanceiro;
 
 class authController extends Controller {
 	
@@ -175,13 +177,33 @@ class authController extends Controller {
     {
         $user = User::find_uuid($request->cliente["uuid"]);
         $userUpdateData = $request->cliente;
-        if(is_null($userUpdateData["password"])) {
+        if(!is_null($userUpdateData["password"])) {
             $userUpdateData["password"] = bcrypt($userUpdateData["password"]);
         }
         $user->update($userUpdateData);
       //  $endereco = $user->endereco;
        // $endereco->update($request->endereco);
         return response()->json($user);
+    }
+
+    public function destroy ($uuid)
+    {
+        $user = User::find_uuid($uuid);
+        $venda = Venda::where('cliente_id', $user->id)
+            ->orWhere('consignado_id', $user->id)
+            ->get();
+        $fluxoFinanceiro = FluxoFinanceiro::where('cliente_id')->get();
+        if($venda->count() > 0 || $fluxoFinanceiro->count() > 0) {
+            return response()->json(['Existe fluxo financeiro ou venda amarrado ao cliente']);
+        }
+
+        $enderecos = $user->endereco;
+        foreach($enderecos as $endereco) {
+            $endereco->delete();
+        }
+        $user->delete();
+
+        return response()->json(['cliente deletado ocm sucesso']);
     }
 
 
