@@ -37,8 +37,12 @@ class ProdutoController extends Controller
         $produto = $request["produto"];
         $categoria = ProductCategory::find_uuid($produto['categoria_uuid']);
         $colecao = ProdutoColecao::find_uuid($produto['colecao_uuid']);
-        $produto['categoria_id'] = $categoria->id;
-        $produto['colecao_id'] = $colecao->id;
+        if($colecao->id != null){
+            $produto['colecao_id'] = $colecao->id;
+        }
+        if($categoria->id != null) {
+            $produto['categoria_id'] = $categoria->id;
+        }
         $produto = Produto::create($produto);
         $produto->numero_codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
         $produto->codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
