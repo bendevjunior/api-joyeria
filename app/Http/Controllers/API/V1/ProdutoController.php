@@ -24,22 +24,22 @@ class ProdutoController extends Controller
         }
         return response()->json(compact('produtos'));
     }
-    public function desabilita(Request $request) {
+    public function desabilita(Request $request)
+    {
         $produto = Produto::find_uuid($request->uuid);
         $produto->status = 0;
         $produto->update();
         return response()->json(['success' => 'produto desabilitado com sucesso']);
     }
-    public function store(Request $request)
-    {
+    public function store(Request $request){
 
 
         $produto = $request["produto"];
-        if($produto['categoria_uuid'] != null){
+        if ($produto['categoria_uuid'] != null) {
             $colecao = ProdutoColecao::find_uuid($produto['colecao_uuid']);
             $produto['colecao_id'] = $colecao->id;
         }
-        if($produto['categoria_uuid'] != null) {
+        if ($produto['categoria_uuid'] != null) {
             $categoria = ProductCategory::find_uuid($produto['categoria_uuid']);
             $produto['categoria_id'] = $categoria->id;
         }
@@ -55,10 +55,11 @@ class ProdutoController extends Controller
                     'url' => $foto['foto']
                 ]);
             }
-        
-        $categoria = $produto->categoria;
-        $colecao = $produto->colecao;
-        return response()->json(compact('produto'));
+
+            $categoria = $produto->categoria;
+            $colecao = $produto->colecao;
+            return response()->json(compact('produto'));
+        }
     }
 
     public function store_update_fornecedor(Request $request)
@@ -148,7 +149,7 @@ class ProdutoController extends Controller
     {
         //$categoria = ProductCategory::where('status', 1)->orderBy('nome', 'asc')->with('produto')->get();
         $categorias = ProductCategory::where('status', 1)->orderBy('nome', 'asc')->get();
-        foreach($categorias as $categoria) {
+        foreach ($categorias as $categoria) {
             $categoria->qnt = $categoria->QntProduto;
         }
         return response()->json(compact('categorias'));
@@ -178,7 +179,7 @@ class ProdutoController extends Controller
     public function colecao_index(Request $request)
     {
         $colecoes = ProdutoColecao::where('status', 1)->orderBy('nome', 'asc')->get();
-        foreach($colecoes as $colecao) {
+        foreach ($colecoes as $colecao) {
             $colecao->qnt = $colecao->QntProduto;
         }
         return response()->json(compact('colecoes'));
@@ -187,16 +188,16 @@ class ProdutoController extends Controller
     public function colecao_produto(Request $request)
     {
         $colecao = ProdutoColecao::where('nome', $request->nome)->first();
- 
+
         $produto = Produto::where('colecao_id', $colecao->id)->orderBy('nome', 'asc')->with('foto', 'colecao')->get();
         $qnt = $produto->count();
         return response()->json(compact('qnt', 'produto'));
     }
-    
+
     public function categoria_produto_nome(Request $request)
     {
         $categoria = ProductCategory::where('nome', $request->nome)->first();
- 
+
         $produto = Produto::where('categoria_id', $categoria->id)->orderBy('nome', 'asc')->with('foto', 'colecao')->get();
         $qnt = $produto->count();
         return response()->json(compact('qnt', 'produto'));
