@@ -224,7 +224,7 @@ class ProdutoController extends Controller
             $produto['categoria_id'] = $categoria->id;
         }
        
-        $produto->update($request->all());
-        return response()->json($produto);
+       // $produto->update($request->all());
+        return response()->json($request);
     }
 }
