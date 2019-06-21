@@ -35,12 +35,12 @@ class ProdutoController extends Controller
 
 
         $produto = $request["produto"];
-        if ($produto['colecao_uuid'] != null) {
-            $colecao = ProdutoColecao::find_uuid($produto['colecao_uuid']);
+        if ($request->produto['colecao_uuid'] != null) {
+            $colecao = ProdutoColecao::find_uuid($request->produto['colecao_uuid']);
             $produto['colecao_id'] = $colecao->id;
         }
-        if ($produto['categoria_uuid'] != null) {
-            $categoria = ProductCategory::find_uuid($produto['categoria_uuid']);
+        if ($request->produto['categoria_uuid'] != null) {
+            $categoria = ProductCategory::find_uuid($request->produto['categoria_uuid']);
             $produto['categoria_id'] = $categoria->id;
         }
         $produto = Produto::create($produto);
@@ -117,7 +117,7 @@ class ProdutoController extends Controller
 
     public function store_foto(Request $request)
     {
-        $produto = Produto::find($produto->id);
+        $produto = Produto::find($request->id);
         ProdutoFoto::create([
             'produto_id' => $produto->id,
             'url' => $request->foto
@@ -213,6 +213,14 @@ class ProdutoController extends Controller
     public function update(Request $request)
     {
         $produto = Produto::find_uuid($request->uuid);
+        if ($request->produto['colecao_uuid'] != null) {
+            $colecao = ProdutoColecao::find_uuid($request->produto['colecao_uuid']);
+            $request->produto['colecao_id'] = $colecao->id;
+        }
+        if ($request->produto['categoria_uuid'] != null) {
+            $categoria = ProductCategory::find_uuid($request->produto['categoria_uuid']);
+            $produto['categoria_id'] = $categoria->id;
+        }
         $produto->update($request->all());
         return response()->json($produto);
     }
