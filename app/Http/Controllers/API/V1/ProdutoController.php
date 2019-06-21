@@ -212,8 +212,7 @@ class ProdutoController extends Controller
     //update
     public function update(Request $request)
     {
-        $categoria = ProductCategory::find_uuid($request->categoria_uuid);
-      /*  $produto = Produto::find_uuid($request->uuid);
+       $produto = Produto::find_uuid($request->uuid);
         
         if(is_null($request->colecao_uuid)){
             $colecao = ProdutoColecao::find_uuid($request->colecao_uuid);
@@ -223,9 +222,9 @@ class ProdutoController extends Controller
         if(is_null($request->categoria_uuid)){
             $categoria = ProductCategory::find_uuid($request->categoria_uuid);
             $produto['categoria_id'] = $categoria->id;
-        }*/
+        }
        
-       // $produto->update($request->all());
-        return response()->json($categoria);
+        $produto->update($request->all());
+        return response()->json($produto);
     }
 }
