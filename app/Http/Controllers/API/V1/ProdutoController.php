@@ -217,12 +217,11 @@ class ProdutoController extends Controller
             $colecao = ProdutoColecao::find_uuid($request->produto['colecao_uuid']);
             $produto['colecao_id'] = $colecao->id;
         }
-        dd($request->produto);
         if ($request->produto['categoria_uuid'] != null) {
             $categoria = ProductCategory::find_uuid($request->produto['categoria_uuid']);
             $produto['categoria_id'] = $categoria->id;
         }
-        $produto->update($request->all());
-        return response()->json($produto);
+        //$produto->update($request->all());
+        return response()->json($request->produto['categoria_uuid']);
     }
 }
