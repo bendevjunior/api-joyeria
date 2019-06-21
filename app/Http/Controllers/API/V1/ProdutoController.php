@@ -214,12 +214,12 @@ class ProdutoController extends Controller
     {
         $produto = Produto::find_uuid($request->uuid);
         
-        if(!is_null($request->colecao_uuid)){
+        if(is_null($request->colecao_uuid)){
             $colecao = ProdutoColecao::find_uuid($request->colecao_uuid);
             $produto['colecao_id'] = $colecao->id;
         }
         
-        if(!is_null($request->categoria_uuid)){
+        if(is_null($request->categoria_uuid)){
             $categoria = ProductCategory::find_uuid($request->categoria_uuid);
             $produto['categoria_id'] = $categoria->id;
         }
