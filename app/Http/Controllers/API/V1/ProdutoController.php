@@ -222,6 +222,6 @@ class ProdutoController extends Controller
             $produto['categoria_id'] = $categoria->id;
         }
         //$produto->update($request->all());
-        return response()->json($request->produto['categoria_uuid']);
+        return response()->json($request->produto);
     }
 }
