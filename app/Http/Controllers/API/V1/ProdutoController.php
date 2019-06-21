@@ -212,7 +212,13 @@ class ProdutoController extends Controller
     //update
     public function update(Request $request)
     {
-        return response()->json(is_null($request->categoria_uuid));
+        $teste_retorno = [
+            'id' => $request->categoria_uuid,
+            'como_vem' => is_null($request->categoria_uuid),
+            
+        ];
+   
+        return response()->json($teste_retorno);
        $produto = Produto::find_uuid($request->uuid);
         
         if(!is_null($request->colecao_uuid)){
