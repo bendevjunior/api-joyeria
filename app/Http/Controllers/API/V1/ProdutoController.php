@@ -35,11 +35,11 @@ class ProdutoController extends Controller
 
 
         $produto = $request["produto"];
-        if ($request->produto['colecao_uuid'] != null) {
+        if (is_null($request->produto['colecao_uuid']) == false) {
             $colecao = ProdutoColecao::find_uuid($request->produto['colecao_uuid']);
             $produto['colecao_id'] = $colecao->id;
         }
-        if ($request->produto['categoria_uuid'] != null) {
+        if (is_null($request->produto['categoria_uuid']) == false) {
             $categoria = ProductCategory::find_uuid($request->produto['categoria_uuid']);
             $produto['categoria_id'] = $categoria->id;
         }
@@ -218,19 +218,16 @@ class ProdutoController extends Controller
         if(is_null($request->colecao_uuid) == false){
             $colecao = ProdutoColecao::find_uuid($request->colecao_uuid);
             $produto->colecao_id = $colecao->id;
+            $request->merge([
+                'colecao_id' => $colecao->id
+            ]);
         }
         
         if(is_null($request->categoria_uuid) == false){
             $categoria = ProductCategory::find_uuid($request->categoria_uuid);
-            $produto->categoria_id = $categoria->id;
-            $teste_retorno = [
-                'id' => $request->categoria_uuid,
-                'como_vem' => is_null($request->categoria_uuid),
-                'cateogria' => $categoria->id,
-                'produto_com_categoria' =>  $produto->categoria_id
-            ];
-       
-            return response()->json($teste_retorno);
+            $request->merge([
+                'categoria_id' => $categoria->id
+            ]);
         }
        
         $produto->update($request->all());
