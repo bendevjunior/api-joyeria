@@ -212,24 +212,25 @@ class ProdutoController extends Controller
     //update
     public function update(Request $request)
     {
-        $teste_retorno = [
-            'id' => $request->categoria_uuid,
-            'como_vem' => is_null($request->categoria_uuid),
-            
-        ];
-   
-        return response()->json($teste_retorno);
+        
        $produto = Produto::find_uuid($request->uuid);
         
-        if(!is_null($request->colecao_uuid)){
+        if(is_null($request->colecao_uuid) == false){
             $colecao = ProdutoColecao::find_uuid($request->colecao_uuid);
             $produto->colecao_id = $colecao->id;
         }
         
-        if(!is_null($request->categoria_uuid)){
+        if(is_null($request->categoria_uuid) == false){
             $categoria = ProductCategory::find_uuid($request->categoria_uuid);
             $produto->categoria_id = $categoria->id;
-            
+            $teste_retorno = [
+                'id' => $request->categoria_uuid,
+                'como_vem' => is_null($request->categoria_uuid),
+                'cateogria' => $categoria->id,
+                'produto_com_categoria' =>  $produto->categoria_id
+            ];
+       
+            return response()->json($teste_retorno);
         }
        
         $produto->update($request->all());
