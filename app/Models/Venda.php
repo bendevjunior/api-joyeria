@@ -18,7 +18,8 @@ class Venda extends Model
         'uuid', 'produto_id', 'cliente_id',
         'qnt', 'preco', 'preco_final', 'preco_do_desconto', 
         'data_pagamento', 'status', 'bf_code', 'bf_reference',
-        'bf_link', 'bf_barcode', 'fluxo_financeiro_id'
+        'bf_link', 'bf_barcode', 'fluxo_financeiro_id',
+        'preco_do_acrescimo'
     ];
 
     

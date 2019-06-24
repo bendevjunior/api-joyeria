@@ -44,6 +44,11 @@ class VendaController extends Controller
         return response()->json(compact($venda));
     }
 
+    //verifique que permite 
+    public function verifique_se_tem_no_estoque ($produto, $qnt)
+    {
+        return $produto->qnt < $qnt ? false : true;
+    }
     /**
      * Store a mew venda.
      *
@@ -52,8 +57,13 @@ class VendaController extends Controller
      */
     public function store(Request $request)
     {
+        foreach($request->venda["produtos"] as $produto) {
+            $produto_obj = Produto::find_uuid($produto['produto_uuid']);
+            if(!$this->verifique_se_tem_no_estoque($produto_obj, $produto['qnt'])){
+                return response()->json(['Existe produtos que nao tem no estoque']);
+            }
+        }
         $data = $request->venda;
-        $produto = Produto::find_uuid($data['produto_uuid']);
         if(isset($data['cliente_uuid']) && $data['cliente_uuid']) {
             $cliente = User::find_uuid($data['cliente_uuid']);
             $cliente_id = $cliente->id;
@@ -73,20 +83,24 @@ class VendaController extends Controller
                 'cliente_id' => $cliente_id,
                 'preco' => 0,
                 'preco_final' => 0,
-                'preco_do_desconto' => 0,
+                'preco_do_desconto' => $request->venda['preco_do_desconto'],
+                'preco_do_acrescimo' => $request->venda['preco_do_acrescimo'],
                 'status' => 0
             ]);
         } else {
             $venda = $existVenda[0];
         }
-        ProdutoVenda::create([
-            'qnt' => $request->qnt,
-            'venda_id' => $venda->id,
-            'qnt' => $data['qnt'],
-            'cliente_id' => $cliente_id,
-            'valor_desconto' => $preco_desconto,
-            'valor' => $produto->valor_venda * $data['qnt']
-        ]);
+        foreach ($request->venda["produtos"] as $produto) {
+            $produto_obj = Produto::find_uuid($produto['produto_uuid']);
+            ProdutoVenda::create([
+                'venda_id' => $venda->id,
+                'qnt' => $produto['qnt'],
+                'cliente_id' => $cliente_id,
+                'valor_desconto' => $produto['valor_desconto'],
+                'valor_acrescimo' => $produto['valor_acrescimo'],
+                'valor' => $produto_obj->valor_venda * $produto['qnt'] + $produto['valor_acrescimo'] - $produto['valor_desconto']
+            ]);
+        }
         $venda->calcula_valor();
         $venda = Venda::find($venda->id);
         return response()->json(compact('venda'));

@@ -13,7 +13,8 @@ class ProdutoVenda extends Model
         'cliente_id', 
         'qnt', 
         'valor_desconto',
-        'valor'
+        'valor',
+        'preco_do_acrescimo'
     ];
 
     public function produto()

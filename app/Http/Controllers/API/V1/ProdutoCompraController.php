@@ -12,7 +12,6 @@ use App\Models\Fornecedor;
 class ProdutoCompraController extends Controller {
     
     public function store(Request $request) {
-        
         $produto    = Produto::find_uuid($request->produto_uuid);
         $fornecedor = Fornecedor::find_uuid($request->fornecedor_uuid);
         $request->merge([

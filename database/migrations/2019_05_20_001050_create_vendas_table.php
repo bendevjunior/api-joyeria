@@ -24,6 +24,7 @@ class CreateVendasTable extends Migration
             $table->decimal('preco', 11, 2)->nullable();
             $table->decimal('preco_final', 11, 2)->nullable();
             $table->decimal('preco_do_desconto', 11, 2)->nullable();
+            $table->decimal('preco_do_acrescimo', 11, 2)->nullable();
             //$table->date('data_pagamento')->nullable();
             $table->smallInteger('status')->default(0)->comment('0- em aberto | 1- finalizado');
             

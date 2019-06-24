@@ -19,6 +19,7 @@ class CreateProdutoVendasTable extends Migration
             $table->integer('cliente_id')->unsigned();
             $table->integer('qnt');
             $table->decimal('valor_desconto', 11, 2)->nullable();
+            $table->decimal('valor_acrescimo', 11, 2)->nullable();
             $table->decimal('valor', 11, 2)->nullable();
 
             $table->foreign('venda_id')->references('id')->on('vendas');
