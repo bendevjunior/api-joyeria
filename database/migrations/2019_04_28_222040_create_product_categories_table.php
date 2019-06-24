@@ -18,6 +18,7 @@ class CreateProductCategoriesTable extends Migration
             $table->uuid('uuid');
             $table->integer('categoria_pai_id')->nullable();
             $table->string('nome');
+            $table->text('img')->nullable();
             $table->smallInteger('status')->default(1)->comment('0-desativado | 1- ativado');
             $table->timestamps();
             $table->softDeletes();

@@ -50,8 +50,8 @@ class authController extends Controller {
         $user = User::create($request->all());
         $user = User::find($user->id);
         //#envia email
-        $mail = Mail::to($$user->email)
-			->queue(new RegisterMail($user, $password));
+        // $mail = Mail::to($$user->email)
+		// 	->queue(new RegisterMail($user, $password));
 
         $endereco = $user->endereco;
         $endereco_cidade = $user->endereco->cidade->nome;

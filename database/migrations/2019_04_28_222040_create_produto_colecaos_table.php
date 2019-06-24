@@ -17,6 +17,7 @@ class CreateProdutoColecaosTable extends Migration
             $table->increments('id');
             $table->uuid('uuid');
             $table->string('nome');
+            $table->text('img')->nullable();
             $table->smallInteger('status')->default(1)->comment('0-desativado | 1- ativado');
             $table->timestamps();
             $table->softDeletes();

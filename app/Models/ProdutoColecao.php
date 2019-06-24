@@ -13,7 +13,7 @@ class ProdutoColecao extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'uuid', 'nome', 'status'
+        'uuid', 'nome', 'img', 'status'
     ];
 
     

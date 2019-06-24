@@ -13,7 +13,7 @@ class ProductCategory extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'uuid', 'nome', 'status', 'categoria_pai_id'
+        'uuid', 'nome', 'img', 'status', 'categoria_pai_id'
     ];
 
     
