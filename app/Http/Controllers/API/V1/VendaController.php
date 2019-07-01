@@ -58,7 +58,7 @@ class VendaController extends Controller
     public function store(Request $request)
     {
         foreach($request->venda["produtos"] as $produto) {
-            $produto_obj = Produto::find_uuid($produto['produto_uuid']);
+            $produto_obj = Produto::find_uuid($produto['uuid']);
             if(!$this->verifique_se_tem_no_estoque($produto_obj, $produto['qnt'])){
                 return response()->json(['Existe produtos que nao tem no estoque']);
             }
@@ -91,7 +91,7 @@ class VendaController extends Controller
             $venda = $existVenda[0];
         }
         foreach ($request->venda["produtos"] as $produto) {
-            $produto_obj = Produto::find_uuid($produto['produto_uuid']);
+            $produto_obj = Produto::find_uuid($produto['uuid']);
             ProdutoVenda::create([
                 'venda_id' => $venda->id,
                 'qnt' => $produto['qnt'],
@@ -102,7 +102,7 @@ class VendaController extends Controller
             ]);
         }
         $venda->calcula_valor();
-        $venda = Venda::find($venda->id);
+        $venda = Venda::with('produto_venda')->find($venda->id);
         return response()->json(compact('venda'));
     }
 

@@ -23,7 +23,7 @@ class ConsignadoController extends Controller
         
         foreach($request->all() as $r) {
             $cliente = User::find_uuid($r['cliente_uuid']);
-            $produto = Produto::find_uuid($r['produto_uuid']);
+            $produto = Produto::find_uuid($r['uuid']);
             $r['cliente_id'] = $cliente->id;
             $r['produto_id'] = $produto->id;
             Consignado::create($r);

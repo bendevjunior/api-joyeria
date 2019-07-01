@@ -12,16 +12,5 @@ class ConsignadoSeed extends Seeder
      */
     public function run()
     {
-        Consignado::create([
-            'produto_id' => 1,
-            'cliente_id' => 2,
-            'qnt' => 10
-        ]);
-
-        Consignado::create([
-            'produto_id' => 2,
-            'cliente_id' => 2,
-            'qnt' => 10
-        ]);
     }
 }

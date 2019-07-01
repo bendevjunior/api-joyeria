@@ -70,12 +70,6 @@ class Produto extends Model {
 
 
 
-
-
-
-
-
-
     public static function remover_do_estoque($produto_id, $qnt) {
         $produto = Produto::find($produto_id);
         $produto->qnt = $produto->qnt - $qnt;
