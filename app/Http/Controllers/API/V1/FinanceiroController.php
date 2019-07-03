@@ -35,4 +35,8 @@ class FinanceiroController extends Controller
             ->with('cliente', 'venda')->get();
         return response()->json($fluxoFinanceiro);
     }
+    public function financeiro_list() {
+        $fluxoFinanceiro = FluxoFinanceiro::with('cliente', 'venda')->get();
+    return response()->json($fluxoFinanceiro);
+    }
 }

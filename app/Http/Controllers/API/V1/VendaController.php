@@ -129,8 +129,8 @@ class VendaController extends Controller
         $cliente = $venda->cliente;
         $valor_total = $venda->preco_final;
         $valor = $valor_total/$request->parcelas;
-        //$payer = new Payer($cliente->nome, $cliente->cpf_cnpj);
-        $payer = new Payer($cliente->nome, '428.338.578-61');
+        $payer = new Payer($cliente->nome, $cliente->cpf_cnpj);
+        //$payer = new Payer($cliente->nome, '428.338.578-61');
         $charge = new Charge('Boleto de cobrança Joyeria da venda #'. $venda->id, (string) Uuid::generate(4), null, $request->data_vencimento);
         $charge->amount = $valor;
         $charge->installments = $request->parcelas;
@@ -159,5 +159,9 @@ class VendaController extends Controller
         $venda->status = 1;
         $venda->save();
         return response()->json(['Venda encerrada com sucesso']);
+    }
+    public function show($uuid){
+        $venda = Venda::find_uuid($uuid);
+        return response()->json($venda);
     }
 }
