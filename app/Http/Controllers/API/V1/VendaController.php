@@ -92,6 +92,7 @@ class VendaController extends Controller
         }
         foreach ($request->venda["produtos"] as $produto) {
             $produto_obj = Produto::find_uuid($produto['uuid']);
+            Produto::remover_do_estoque($produto['id'], $produto['qnt']);
             ProdutoVenda::create([
                 'venda_id' => $venda->id,
                 'qnt' => $produto['qnt'],
