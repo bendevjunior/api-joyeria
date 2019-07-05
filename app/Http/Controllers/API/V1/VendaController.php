@@ -202,10 +202,10 @@ class VendaController extends Controller
 
     public function remove_da_venda(Request $request)
     {
-        $venda = ProdutoVenda::where('uuid',$request->venda['uuid']);
+        $venda = Venda::where('uuid',$request->venda['uuid']);
         foreach ($request->venda["produtos"] as $produto) {
-            $produto_obj = Produto::find_uuid($produto['uuid']);
-            Produto::adicionar_ao_estoque($produto['id'], $produto['qnt']);
+            $produto_obj = Produto::find($produto['produto_id']);
+            Produto::adicionar_ao_estoque($produto['produto_id'], $produto['qnt']);
             $produto_venda = ProdutoVenda::where('venda_id', $venda->id)
                 ->where('produto_id', $produto_obj->id)
                 ->first();
