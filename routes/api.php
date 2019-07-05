@@ -24,6 +24,7 @@ Route::get('slider/unico/{id}', "API\V1\SliderController@show");
 
 Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'venda'], function () {
     Route::post('store', 'API\V1\VendaController@store');
+    Route::post('remove-produto', 'API\V1\VendaController@remove_da_venda');
     Route::put('update', 'API\V1\VendaController@update');
     Route::delete('destroy/{uuid}', 'API\V1\VendaController@destroy');
     Route::get('show/{uuid}','API\V1\VendaController@show');

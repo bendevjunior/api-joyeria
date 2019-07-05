@@ -14,7 +14,8 @@ class ProdutoVenda extends Model
         'qnt', 
         'valor_desconto',
         'valor',
-        'preco_do_acrescimo'
+        'preco_do_acrescimo',
+        'produto_id'
     ];
 
     public function produto()

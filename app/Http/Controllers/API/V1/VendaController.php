@@ -30,8 +30,18 @@ class VendaController extends Controller
         $venda = Venda::where('cliente_id', $cliente->id)->get();
         if($request->meio_pagamento == 0) {
             $this->generate_boletos($venda, $request);
-        } else {
-
+        } elseif($request->meio_pagamento == 1) { //apenas envia para o fluxo financeiro
+            FluxoFinanceiro::create([
+                'cliente_id'=>$cliente->id,
+                'venda_id'=>$venda->id,
+                'descricao' => 'Venda #'.$venda->id,
+                'data_vencimento'=>now()->format('Y-m-d'),
+                'valor_da_parcela'=>$venda->preco_final,
+                'valor_total_venda'=>$$venda->preco_final,
+                'parcela_atual' => 1,
+                'total_parcelas' =>1,
+                'status' => 1
+            ]);
         }
         
     }
@@ -95,6 +105,7 @@ class VendaController extends Controller
             Produto::remover_do_estoque($produto['id'], $produto['qnt']);
             ProdutoVenda::create([
                 'venda_id' => $venda->id,
+                'produto_id' => $produto_obj->id,
                 'qnt' => $produto['qnt'],
                 'cliente_id' => $cliente_id,
                 'valor_desconto' => $produto['valor_desconto'],
@@ -164,5 +175,22 @@ class VendaController extends Controller
     public function show($uuid){
         $venda = Venda::find_uuid($uuid);
         return response()->json($venda);
+    }
+
+    public function remove_da_venda(Request $request)
+    {
+        $venda = ProdutoVenda::find_uuid($request->venda['uuid']);
+        foreach ($request->venda["produtos"] as $produto) {
+            $produto_obj = Produto::find_uuid($produto['uuid']);
+            Produto::adicionar_ao_estoque($produto['id'], $produto['qnt']);
+            $produto_venda = ProdutoVenda::where('venda_id', $venda->id)
+                ->where('produto_id', $produto_obj->id)
+                ->first();
+            $produto_venda->qnt = $produto_venda->qnt - $produto['qnt'];
+            $produto_venda->save();
+        }
+        $venda->calcula_valor();
+        $venda = Venda::with('produto_venda')->find($venda->id);
+        return response()->json(compact('venda'));
     }
 }

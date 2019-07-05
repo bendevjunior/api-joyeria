@@ -16,6 +16,7 @@ class CreateProdutoVendasTable extends Migration
         Schema::create('produto_vendas', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('venda_id')->unsigned();
+            $table->integer('produto_id')->unsigned();
             $table->integer('cliente_id')->unsigned();
             $table->integer('qnt');
             $table->decimal('valor_desconto', 11, 2)->nullable();
@@ -23,6 +24,7 @@ class CreateProdutoVendasTable extends Migration
             $table->decimal('valor', 11, 2)->nullable();
 
             $table->foreign('venda_id')->references('id')->on('vendas');
+            $table->foreign('produto_id')->references('id')->on('produtos');
             $table->foreign('cliente_id')->references('id')->on('users');
         });
     }
