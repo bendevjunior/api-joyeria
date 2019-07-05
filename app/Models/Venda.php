@@ -24,7 +24,7 @@ class Venda extends Model
 
     
     protected $hidden = [
-        "created_at", "updated_at", "deleted_at", 'produto_id', 'cliente_id'
+        "updated_at", "deleted_at", 'produto_id', 'cliente_id'
     ];
 
     //run create

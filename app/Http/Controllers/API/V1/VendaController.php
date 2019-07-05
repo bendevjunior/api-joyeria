@@ -172,10 +172,16 @@ class VendaController extends Controller
         $venda->save();
         return response()->json(['Venda encerrada com sucesso']);
     }
-    public function show($uuid)
+    public function show(Request $rq)
     {
-        $venda = Venda::find_uuid($uuid);
-        return response()->json($venda);
+        $venda = Venda::with('cliente')->with('produto_venda')->where('uuid', $rq->uuid)->first();
+        $produtos = array();
+        foreach($venda->produto_venda as $produto){
+            $p = Produto::find($produto->produto_id);
+            $produtos[] = $p;
+        }
+        
+        return response()->json(compact('venda', 'produtos'));
     }
 
     public function remove_da_venda(Request $request)
