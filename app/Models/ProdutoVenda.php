@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProdutoVenda extends Model
 {
     protected $table = 'produto_vendas';
+    protected $with  = 'produto';
     public $timestamps = false;
     protected $fillable = [
         'venda_id', 
@@ -17,6 +18,8 @@ class ProdutoVenda extends Model
         'preco_do_acrescimo',
         'produto_id'
     ];
+
+
 
     public function produto()
     {

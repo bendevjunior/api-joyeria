@@ -59,9 +59,8 @@ class Venda extends Model
     public function produto_venda() {
         return $this->hasMany(ProdutoVenda::class, 'venda_id');
     }
-
-
-
+    
+    
 
     public function calcula_valor()
     {

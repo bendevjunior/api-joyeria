@@ -16,6 +16,7 @@ use App\Models\FluxoFinanceiro;
 use App\Models\ProdutoVenda;
 use Uuid;
 use Carbon\Carbon;
+use DB;
 
 class VendaController extends Controller
 {
@@ -174,12 +175,27 @@ class VendaController extends Controller
     }
     public function show(Request $rq)
     {
-        $venda = Venda::with('cliente')->with('produto_venda')->where('uuid', $rq->uuid)->first();
-        $produtos = array();
-        foreach($venda->produto_venda as $produto){
-            $p = Produto::find($produto->produto_id);
-            $produtos[] = $p;
-        }
+        $venda = Venda::with('cliente')
+        ->where('uuid', $rq->uuid)
+        ->first();
+
+        // uuid = venda => cliente , produtos..
+        // object 
+        // 3 = 3 (  )
+
+        $produtos = ProdutoVenda::select('produto_id',
+        DB::raw('SUM(valor) as valor'), 
+        DB::raw('count(qnt) as quantidade_total'))
+        ->groupBy('produto_id')
+        ->where('venda_id', $venda->id)
+        ->with('produto')
+        ->get();
+
+      //  $produtos = Produto::where('id',)->get();
+      //  foreach($venda->produto_venda as $produto){
+        //    $p = Produto::find($produto->produto_id);
+          //  $produtos[] = $p;
+        //}
         
         return response()->json(compact('venda', 'produtos'));
     }
