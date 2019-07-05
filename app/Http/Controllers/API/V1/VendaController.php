@@ -24,29 +24,29 @@ class VendaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function complete_cliente(Request $request, $cliente_uuid)
     {
         $cliente = User::find_uuid($cliente_uuid);
-        $venda = Venda::where('cliente_id', $cliente->id)->get();
-        if($request->meio_pagamento == 0) {
+        $venda = Venda::where('cliente_id', $cliente->id)->first();
+        if ($request->meio_pagamento == 0) {
             $this->generate_boletos($venda, $request);
-        } elseif($request->meio_pagamento == 1) { //apenas envia para o fluxo financeiro
+        } else if ($request->meio_pagamento == 1 || $request->meio_pagamento == 2) { //apenas envia para o fluxo financeiro
             FluxoFinanceiro::create([
-                'cliente_id'=>$cliente->id,
-                'venda_id'=>$venda->id,
-                'descricao' => 'Venda #'.$venda->id,
-                'data_vencimento'=>now()->format('Y-m-d'),
-                'valor_da_parcela'=>$venda->preco_final,
-                'valor_total_venda'=>$$venda->preco_final,
+                'cliente_id' => $cliente->id,
+                'venda_id' => $venda->id,
+                'descricao' => 'Venda #' . $venda->id,
+                'data_vencimento' => now()->format('Y-m-d'),
+                'valor_da_parcela' => $venda->preco_final,
+                'valor_total_venda' => $venda->preco_final,
                 'parcela_atual' => 1,
-                'total_parcelas' =>1,
-                'status' => 1
+                'total_parcelas' => 1,
+                'status' => 0
             ]);
         }
-        
     }
 
-    
+
     public function update(Request $request)
     {
         $venda = Venda::find_uuid($request->venda_uuid);
@@ -55,7 +55,7 @@ class VendaController extends Controller
     }
 
     //verifique que permite 
-    public function verifique_se_tem_no_estoque ($produto, $qnt)
+    public function verifique_se_tem_no_estoque($produto, $qnt)
     {
         return $produto->qnt < $qnt ? false : true;
     }
@@ -67,22 +67,22 @@ class VendaController extends Controller
      */
     public function store(Request $request)
     {
-        foreach($request->venda["produtos"] as $produto) {
+        foreach ($request->venda["produtos"] as $produto) {
             $produto_obj = Produto::find_uuid($produto['uuid']);
-            if(!$this->verifique_se_tem_no_estoque($produto_obj, $produto['qnt'])){
+            if (!$this->verifique_se_tem_no_estoque($produto_obj, $produto['qnt'])) {
                 return response()->json(['Existe produtos que nao tem no estoque']);
             }
         }
         $data = $request->venda;
-        if(isset($data['cliente_uuid']) && $data['cliente_uuid']) {
+        if (isset($data['cliente_uuid']) && $data['cliente_uuid']) {
             $cliente = User::find_uuid($data['cliente_uuid']);
             $cliente_id = $cliente->id;
         } else {
             $cliente_id = auth()->user()->id;
             $cliente = auth()->user();
         }
-        
-        if(auth()->user() != null && auth()->user()->role != 1) {
+
+        if (auth()->user() != null && auth()->user()->role != 1) {
             $data['preco_do_desconto'] = 0;
         }
 
@@ -140,28 +140,28 @@ class VendaController extends Controller
         $produto_venda = $venda->produto_venda;
         $cliente = $venda->cliente;
         $valor_total = $venda->preco_final;
-        $valor = $valor_total/$request->parcelas;
+        $valor = $valor_total / $request->parcelas;
         $payer = new Payer($cliente->nome, $cliente->cpf_cnpj);
         //$payer = new Payer($cliente->nome, '428.338.578-61');
-        $charge = new Charge('Boleto de cobrança Joyeria da venda #'. $venda->id, (string) Uuid::generate(4), null, $request->data_vencimento);
+        $charge = new Charge('Boleto de cobrança Joyeria da venda #' . $venda->id, (string) Uuid::generate(4), null, $request->data_vencimento);
         $charge->amount = $valor;
         $charge->installments = $request->parcelas;
         $juno = new JunoService();
         $response = $juno->create_charge($payer, $charge);
         $response = $juno->generate_boleto();
-        $i=1;
-        foreach($response->data->charges as $charge) {
+        $i = 1;
+        foreach ($response->data->charges as $charge) {
             FluxoFinanceiro::create([
-                'cliente_id'=>$cliente->id,
-                'venda_id'=>$venda->id,
-                'descricao' => 'Venda #'.$venda->id,
-                'data_vencimento'=>Carbon::parse($charge->dueDate)->format('Y-m-d'),
-                'valor_da_parcela'=>$valor,
-                'valor_total_venda'=>$valor_total,
+                'cliente_id' => $cliente->id,
+                'venda_id' => $venda->id,
+                'descricao' => 'Venda #' . $venda->id,
+                'data_vencimento' => Carbon::parse($charge->dueDate)->format('Y-m-d'),
+                'valor_da_parcela' => $valor,
+                'valor_total_venda' => $valor_total,
                 'parcela_atual' => $i,
                 'total_parcelas' => $request->parcelas,
-                'bf_code'=>$charge->code,
-                'bf_reference'=>$charge->reference,
+                'bf_code' => $charge->code,
+                'bf_reference' => $charge->reference,
                 'bf_link' => $charge->link,
                 'bf_barcode' => $charge->billetDetails->barcodeNumber,
                 'status' => 0
@@ -172,7 +172,8 @@ class VendaController extends Controller
         $venda->save();
         return response()->json(['Venda encerrada com sucesso']);
     }
-    public function show($uuid){
+    public function show($uuid)
+    {
         $venda = Venda::find_uuid($uuid);
         return response()->json($venda);
     }
