@@ -205,12 +205,15 @@ class VendaController extends Controller
         $venda = Venda::where('uuid',$request->venda['uuid'])->first();
         foreach ($request->venda["produtos"] as $produto) {
             $produto_obj = Produto::find($produto['produto_id']);
-            Produto::adicionar_ao_estoque($produto['produto_id'], $produto['quantidade_add']);
+            
             $produto_venda = ProdutoVenda::where('venda_id', $venda->id)
                 ->where('produto_id', $produto_obj->id)
                 ->first();
-            $produto_venda->qnt = $produto_venda->qnt - $produto['quantidade_add'];
-            $produto_venda->save();
+            if($produto_venda->qnt > $produto['quantidade_add'] ){
+                Produto::adicionar_ao_estoque($produto['produto_id'], $produto['quantidade_add']);
+                $produto_venda->qnt = $produto_venda->qnt - $produto['quantidade_add'];
+                $produto_venda->save();
+            }
         }
         $venda->calcula_valor();
         $venda = Venda::with('produto_venda')->find($venda->id);
