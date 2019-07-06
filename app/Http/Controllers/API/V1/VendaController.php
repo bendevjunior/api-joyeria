@@ -185,7 +185,7 @@ class VendaController extends Controller
 
         $produtos = ProdutoVenda::select('produto_id',
         DB::raw('SUM(valor) as valor'), 
-        DB::raw('count(qnt) as quantidade_total'))
+        DB::raw('SUM(qnt) as quantidade_total'))
         ->groupBy('produto_id')
         ->where('venda_id', $venda->id)
         ->with('produto')
