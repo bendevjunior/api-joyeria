@@ -29,7 +29,7 @@ class VendaController extends Controller
     public function complete_cliente(Request $request, $cliente_uuid)
     {
         $cliente = User::find_uuid($cliente_uuid);
-        $venda = Venda::where('cliente_id', $cliente->id)->first();
+        $venda = Venda::find_uuid($request->venda_uuid);
         if ($request->meio_pagamento == 0) {
             $this->generate_boletos($venda, $request);
         } else if ($request->meio_pagamento == 1 || $request->meio_pagamento == 2) { //apenas envia para o fluxo financeiro
