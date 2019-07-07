@@ -88,19 +88,16 @@ class VendaController extends Controller
         }
 
         $preco_desconto = $data['preco_do_desconto'] ?? 0;
-        $existVenda = Venda::where('cliente_id', $cliente_id)->where('status', 0)->get();
-        if ($existVenda->count() == 0) {
-            $venda = Venda::create([
-                'cliente_id' => $cliente_id,
-                'preco' => 0,
-                'preco_final' => 0,
-                'preco_do_desconto' => $request->venda['preco_do_desconto'],
-                'preco_do_acrescimo' => $request->venda['preco_do_acrescimo'],
-                'status' => 0
-            ]);
-        } else {
-            $venda = $existVenda[0];
-        }
+        
+        $venda = Venda::create([
+            'cliente_id' => $cliente_id,
+            'preco' => 0,
+            'preco_final' => 0,
+            'preco_do_desconto' => $request->venda['preco_do_desconto'],
+            'preco_do_acrescimo' => $request->venda['preco_do_acrescimo'],
+            'status' => 0
+        ]);
+
         foreach ($request->venda["produtos"] as $produto) {
             $produto_obj = Produto::find_uuid($produto['uuid']);
             Produto::remover_do_estoque($produto['id'], $produto['qnt']);
@@ -111,7 +108,7 @@ class VendaController extends Controller
                 'cliente_id' => $cliente_id,
                 'valor_desconto' => $produto['valor_desconto'],
                 'valor_acrescimo' => $produto['valor_acrescimo'],
-                'valor' => $produto_obj->valor_venda * $produto['qnt'] + $produto['valor_acrescimo'] - $produto['valor_desconto']
+                'valor' => $produto_obj->valor_venda
             ]);
         }
         $venda->calcula_valor();
@@ -184,12 +181,12 @@ class VendaController extends Controller
         // 3 = 3 (  )
 
         $produtos = ProdutoVenda::select('produto_id',
-        DB::raw('SUM(valor) as valor'), 
-        DB::raw('SUM(qnt) as quantidade_total'))
-        ->groupBy('produto_id')
-        ->where('venda_id', $venda->id)
-        ->with('produto')
-        ->get();
+            DB::raw('SUM(valor) as valor'), 
+            DB::raw('SUM(qnt) as quantidade_total'))
+            ->groupBy('produto_id')
+            ->where('venda_id', $venda->id)
+            ->with('produto')
+            ->get();
 
       //  $produtos = Produto::where('id',)->get();
       //  foreach($venda->produto_venda as $produto){
@@ -209,10 +206,21 @@ class VendaController extends Controller
             $produto_venda = ProdutoVenda::where('venda_id', $venda->id)
                 ->where('produto_id', $produto_obj->id)
                 ->first();
-            if($produto_venda->qnt > $produto['quantidade_add'] ){
-                Produto::adicionar_ao_estoque($produto['produto_id'], $produto['quantidade_add']);
-                $produto_venda->qnt = $produto_venda->qnt - $produto['quantidade_add'];
-                $produto_venda->save();
+            
+
+            if($request->acao == 0) { //remove o produto da venda
+                Produto::adicionar_ao_estoque($produto['produto_id'], $produto_venda->qnt);
+                $produto_venda->delete();
+            } else {
+
+                if($produto_venda->qnt > $produto['quantidade_add'] ){
+                    Produto::adicionar_ao_estoque($produto['produto_id'], $produto['quantidade_add']);
+                    $produto_venda->qnt = $produto_venda->qnt - $produto['quantidade_add'];
+                    $produto_venda->save();
+                }
+
+
+
             }
         }
         $venda->calcula_valor();

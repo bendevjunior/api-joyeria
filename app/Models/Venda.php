@@ -63,16 +63,16 @@ class Venda extends Model
     
 
     public function calcula_valor()
-    {
-        $ProdutoVenda = ProdutoVenda::where('venda_id', $this->id)->where('qnt' > o)->get();
-        //if($ProdutoVenda.le)
+    {   
+        $valor_final = 0;
+        $ProdutoVenda = ProdutoVenda::where('venda_id', $this->id)->where('qnt' > 0)->get();
+        foreach($ProdutoVenda as $pv) {
+            $valor_final += $pv->qnt * $pv->valor;
+        }
         $venda = Venda::find($this->id);
         $desconto = $ProdutoVenda->sum('valor_desconto');
-        //$venda->preco = $ProdutoVenda->sum('valor');
         $venda->preco_do_desconto = $desconto;
-        $venda->preco_final = $ProdutoVenda->sum('valor') - $ProdutoVenda->sum('valor_desconto');
-       
-        
+        $venda->preco_final = $valor_final - $ProdutoVenda->sum('valor_desconto');
         $venda->save();
     }
 }
