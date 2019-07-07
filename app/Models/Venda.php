@@ -64,7 +64,7 @@ class Venda extends Model
 
     public function calcula_valor()
     {
-        $ProdutoVenda = ProdutoVenda::where('venda_id', $this->id)->where('qnt' > o)->get();
+        $ProdutoVenda = ProdutoVenda::where('venda_id', $this->id)->where('qnt' ,'>',0)->get();
         //if($ProdutoVenda.le)
         $venda = Venda::find($this->id);
         $desconto = $ProdutoVenda->sum('valor_desconto');
