@@ -97,10 +97,11 @@ class VendaController extends Controller
             'preco_do_acrescimo' => $request->venda['preco_do_acrescimo'],
             'status' => 0
         ]);
-
+        
         foreach ($request->venda["produtos"] as $produto) {
             $produto_obj = Produto::find_uuid($produto['uuid']);
             Produto::remover_do_estoque($produto['id'], $produto['qnt']);
+            
             ProdutoVenda::create([
                 'venda_id' => $venda->id,
                 'produto_id' => $produto_obj->id,
@@ -110,8 +111,11 @@ class VendaController extends Controller
                 'valor_acrescimo' => $produto['valor_acrescimo'],
                 'valor' => $produto_obj->valor_venda
             ]);
+
         }
+        
         $venda->calcula_valor();
+        
         $venda = Venda::find($venda->id);
         return response()->json(compact('venda'));
     }

@@ -65,7 +65,7 @@ class Venda extends Model
     public function calcula_valor()
     {   
         $valor_final = 0;
-        $ProdutoVenda = ProdutoVenda::where('venda_id', $this->id)->where('qnt' > 0)->get();
+        $ProdutoVenda = ProdutoVenda::where('venda_id', $this->id)->where('qnt', '>', 0)->get();
         foreach($ProdutoVenda as $pv) {
             $valor_final += $pv->qnt * $pv->valor;
         }
