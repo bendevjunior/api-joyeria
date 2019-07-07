@@ -109,3 +109,9 @@ Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'financeiro'], func
     Route::get('lista', "API\V1\FinanceiroController@financeiro_list");
 
 });
+
+Route::group(['middleware' => 'auth:api', 'cors'], function () {
+
+    Route::apiResource('e-comerce', 'API\V1\EComerceController');
+
+});
