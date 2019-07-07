@@ -112,7 +112,7 @@ class VendaController extends Controller
             ]);
         }
         $venda->calcula_valor();
-        $venda = Venda::with('produto_venda')->find($venda->id);
+        $venda = Venda::find($venda->id);
         return response()->json(compact('venda'));
     }
 
