@@ -212,7 +212,7 @@ class VendaController extends Controller
                 ->first();
             
 
-            if($request->acao == 0) { //remove o produto da venda
+            if($produto['acao'] == 0) { //remove o produto da venda
                 Produto::adicionar_ao_estoque($produto['produto_id'], $produto_venda->qnt);
                 $produto_venda->delete();
             } else {

@@ -36,7 +36,7 @@ class Venda extends Model
     }
 
     public static function find_uuid($uuid) {
-        return Consignado::where('uuid', $uuid)->first();
+        return Venda::where('uuid', $uuid)->first();
     }
 
     public function produto() {
