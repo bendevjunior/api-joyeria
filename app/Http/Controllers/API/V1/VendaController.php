@@ -156,7 +156,7 @@ class VendaController extends Controller
             FluxoFinanceiro::create([
                 'cliente_id' => $cliente->id,
                 'venda_id' => $venda->id,
-                'descricao' => 'Venda #' . $venda->id,
+                'descricao' => 'Boleto #' . $venda->id,
                 'data_vencimento' => Carbon::parse($charge->dueDate)->format('Y-m-d'),
                 'valor_da_parcela' => $valor,
                 'valor_total_venda' => $valor_total,
