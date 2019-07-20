@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('produto/show', "API\V1\ProdutoController@show");
 Route::get('produto/{nome}', "API\V1\ProdutoController@mostrar");
 Route::get('produto/list', "API\V1\ProdutoController@index");
 Route::get('produto/categoria/show/{uuid}', "API\V1\ProdutoController@categoria_produto");
@@ -45,6 +44,7 @@ Route::group(['middleware' => 'auth:api', 'cors', 'prefix' => 'produto'], functi
     Route::delete('foto/delete', "API\V1\ProdutoController@destroy_foto");
     Route::get('show/administrativo', 'API\V1\ProdutoController@show_administrativo');
     Route::put('update', "API\V1\ProdutoController@update");
+    Route::get('mais-vendidos', "API\V1\ProdutoController@mais_vendidos");
 });
 
 Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/compra'], function () {

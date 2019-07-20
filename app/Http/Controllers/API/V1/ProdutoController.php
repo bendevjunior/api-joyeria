@@ -11,6 +11,8 @@ use App\Models\Fornecedor;
 use App\Models\PivoProdutoFornecedor;
 use App\Models\ProductCategory;
 use App\Models\ProdutoColecao;
+use App\Models\ProdutoCompra;
+use App\Models\ProdutoVenda;
 
 class ProdutoController extends Controller
 {
@@ -232,5 +234,22 @@ class ProdutoController extends Controller
        
         $produto->update($request->all());
         return response()->json($produto);
+    }
+
+    public function mais_vendidos()
+    {
+        $retorno = [];
+        foreach(Produto::all() as $p) {
+            $produto_venda = ProdutoVenda::where('produto_id', $p->id)->get();
+            if($produto_venda) {
+                $retorno[] = [
+                    'nome' => $p->nome,
+                    'qnt' => $produto_venda->sum('qnt')
+                ];
+            }
+            
+        }
+        return response()->json($retorno);
+        
     }
 }
