@@ -252,4 +252,10 @@ class ProdutoController extends Controller
         return response()->json($retorno);
         
     }
+
+    public function mais_recentes()
+    {
+        $produtos = Produto::orderBy('id', 'desc')->get();
+        return response()->json($produtos);
+    }
 }

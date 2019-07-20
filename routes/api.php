@@ -45,6 +45,7 @@ Route::group(['middleware' => 'auth:api', 'cors', 'prefix' => 'produto'], functi
     Route::get('show/administrativo', 'API\V1\ProdutoController@show_administrativo');
     Route::put('update', "API\V1\ProdutoController@update");
     Route::get('mais-vendidos', "API\V1\ProdutoController@mais_vendidos");
+    Route::get('mais-recentes', "API\V1\ProdutoController@mais_recentes");
 });
 
 Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/compra'], function () {
