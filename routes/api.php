@@ -11,6 +11,10 @@ Route::get('endereco/busca-estado/', "API\V1\\EnderecoController@busca_estado");
 Route::get('endereco/busca-cidade/', "API\V1\\EnderecoController@busca_cidade");
 Route::get('colecao-com-produto/list', "API\V1\ProdutoController@colecao_com_produto_list");
 
+
+Route::get('mais-vendidos', "API\V1\ProdutoController@mais_vendidos");
+Route::get('mais-recentes', "API\V1\ProdutoController@mais_recentes");
+
 Route::get('produto/colecao/show/{nome}', "API\V1\ProdutoController@colecao_produto");
 Route::get('produto/colecao/list', "API\V1\ProdutoController@colecao_index");
 Route::get('produto/categoria/show/name/{nome}', "API\V1\ProdutoController@categoria_produto_nome");
@@ -44,8 +48,6 @@ Route::group(['middleware' => 'auth:api', 'cors', 'prefix' => 'produto'], functi
     Route::delete('foto/delete', "API\V1\ProdutoController@destroy_foto");
     Route::get('show/administrativo', 'API\V1\ProdutoController@show_administrativo');
     Route::put('update', "API\V1\ProdutoController@update");
-    Route::get('mais-vendidos', "API\V1\ProdutoController@mais_vendidos");
-    Route::get('mais-recentes', "API\V1\ProdutoController@mais_recentes");
 });
 
 Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/compra'], function () {

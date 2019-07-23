@@ -113,7 +113,7 @@ class ProdutoController extends Controller
     {
 
         $produto = Produto::where('nome', $request->nome)->where('status', 1)->with('foto', 'categoria', 'colecao')->first();
-        $ultima_compra = $produto->UltimaCompra;
+        $ultima_compra = $produto->ultima_compra;
         return response()->json(compact('produto', 'ultima_compra'));
     }
 
