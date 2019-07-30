@@ -10,10 +10,17 @@ use App\Models\CarrinhoProduto;
 
 class CarrinhoController extends Controller
 {
+    public function show()
+    {
+        $carrinho = Carrinho::where('cliente_id', auth()->user()->id)
+            ->where('status', 0)->first()->with;
+        return response()->json($carrinho);
+    }
+
     public function store (Request $request)
     {
         $carrinho = Carrinho::where('cliente_id', auth()->user()->id)
-            ->where('status', 0)->first();
+            ->where('status', 0)->first()->with('produtos');
         
         //verifica se existe um carrinho aberto
         if($carrinho == null) {
@@ -38,6 +45,29 @@ class CarrinhoController extends Controller
         }
         Carrinho::calcula_valor($carrinho->id);
         return response()->json($carrinho);
+    }
+
+    public function remove_produto(Request $request)
+    {
+        $carrinho = Carrinho::where('cliente_id', auth()->user()->id)
+            ->where('status', 0)->first();
+        $produto = Produto::find_uuid($request->produto_uuid);
+        if($carrinho != null) {
+            CarrinhoProduto::where('carrinho_id', $carrinho->id)
+                ->where('produto_id', $produto->id)
+                ->delete();
+        }
+        return response()->json($carrinho);
+    }
+    
+    public function destroy(Request $request)
+    {
+        $carrinho = Carrinho::where('cliente_id', auth()->user()->id)
+            ->where('status', 0)->first();
+        if($carrinho != null) {
+            $carrinho->delete();
+        }
+        return response()->json([], 204);
     }
 
 
