@@ -17,6 +17,7 @@ class CreateCarrinhoProdutosTable extends Migration
             $table->increments('id');
             $table->integer('carrinho_id')->unsigned();
             $table->integer('produto_id')->unsigned();
+            $table->integer('qnt');
             $table->timestamps();
 
             $table->foreign('carrinho_id')->references('id')->on('carrinhos');

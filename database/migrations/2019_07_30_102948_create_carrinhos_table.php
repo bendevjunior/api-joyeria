@@ -18,6 +18,7 @@ class CreateCarrinhosTable extends Migration
             $table->uuid('uuid');
             $table->integer('venda_id')->unsigned()->nullable();
             $table->integer('cliente_id')->unsigned();
+            $table->decimal('valor', 11, 2)->nullable();
             $table->integer('status')->default(0)->comment('0-aberto | 1- fechado');
             $table->timestamps();
             $table->softDeletes();

@@ -17,7 +17,8 @@ class Carrinho extends Model
         'uuid', 
         'venda_id',
         'cliente_id', 
-        'status'
+        'status',
+        'valor'
     ];
 
     //run create
@@ -34,6 +35,17 @@ class Carrinho extends Model
     
     public function produtos () {
         return $this->hasMany(CarrinhoProduto::class, 'carrinho_id');
+    }
+
+    public static function calcula_valor ($carrinho_id) 
+    {
+        $carrinho = Carrinho::find($carrinho_id);
+        $valor = 0;
+        foreach(CarrinhoProduto::where('carrinho_id', $carrinho_id)->get() as $produto_carrinho) {
+            $valor = $valor + $produto_carrinho->qnt * $produto_carrinho->produto->valor_venda;
+        }
+        $carrinho->valor = $valor;
+        return $valor;
     }
 
 }
