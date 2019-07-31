@@ -118,3 +118,11 @@ Route::group(['middleware' => 'auth:api', 'cors'], function () {
     Route::apiResource('e-comerce', 'API\V1\EComerceController');
 
 });
+
+//## veja as rotas do carrinho
+Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'carrinho'], function () {
+    Route::post('store', 'API\V1\CarrinhoController@store');
+    Route::post('remove-remove_produto', 'API\V1\CarrinhoController@remove_produto');
+    Route::delete('destroy/', 'API\V1\CarrinhoController@destroy');
+    Route::get('show/','API\V1\CarrinhoController@show');
+});

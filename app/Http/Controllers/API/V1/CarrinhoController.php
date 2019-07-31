@@ -70,6 +70,7 @@ class CarrinhoController extends Controller
         return response()->json([], 204);
     }
 
+    //## Funcao de finaliwr venda com abater n estoque e enviar para o fluxo financeiro
 
     private function create_carrinho()
     {
