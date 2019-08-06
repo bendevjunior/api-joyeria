@@ -17,7 +17,7 @@ use App\Models\ProdutoVenda;
 class ProdutoController extends Controller
 {
 
-    public function index()
+    public function index_produto()
     {
         $produtos = Produto::where('status', 1)->orderBy('nome', 'asc')
             ->with('categoria')->get();
