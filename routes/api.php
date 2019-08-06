@@ -40,7 +40,7 @@ Route::group(['middleware' => 'auth:api', 'cors','prefix' => 'fornecedor'], func
     Route::post('update/{uuid}', "API\V1\FornecedorController@update");
 });
 
-Route::group(['middleware' => 'auth:api', 'cors', 'prefix' => 'produto'], function () {
+Route::group(['middleware' => 'auth:api', 'cors', 'prefix' => 'produtos'], function () {
     Route::post('store', "API\V1\ProdutoController@store");
     Route::post('desabilita/{uuid}', "API\V1\ProdutoController@desabilita");
     Route::post('foto/store', "API\V1\ProdutoController@store_foto");
