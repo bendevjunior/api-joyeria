@@ -3,8 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('produto/{nome}', "API\V1\ProdutoController@mostrar");
-Route::get('produto/todos', "API\V1\ProdutoController@index_produto");
+Route::get('produto/{nome}', "API\\V1\\ProdutoController@mostrar");
+Route::get('produto/todos', "API\\V1\\ProdutoController@index_produto");
 Route::get('produto/categoria/show/{uuid}', "API\V1\ProdutoController@categoria_produto");
 Route::get('produto/categoria/list', "API\V1\ProdutoController@categoria_index");
 Route::get('endereco/busca-estado/', "API\V1\\EnderecoController@busca_estado");
