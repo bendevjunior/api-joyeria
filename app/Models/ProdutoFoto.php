@@ -4,8 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class ProdutoFoto extends Model {
+    use LogsActivity;
+
+    /* ******* *** LOGS *** ******* */
+    protected static $logFillable = true;
+
+    protected static $logName = 'produto_foto';
+
+    protected static $logOnlyDirty = true;
+
     protected $table = 'produto_fotos';
     public $timestamps = false;
     protected $fillable = ['uuid', 'produto_id', 'url'];

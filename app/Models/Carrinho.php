@@ -6,12 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Uuid;
 use App\User;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Carrinho extends Model
 {
     protected $table = "carrinhos";
 
     use SoftDeletes;
+    use LogsActivity;
+
+    /* ******* *** LOGS *** ******* */
+    protected static $logFillable = true;
+
+    protected static $logName = 'carrinho';
+
+    protected static $logOnlyDirty = true;
 
     protected $fillable = [
         'uuid', 

@@ -12,12 +12,21 @@ use Laravel\Passport\HasApiTokens;
 use Uuid;
 
 use App\Models\Endereco;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable {
 
     protected $table = 'users';
     use Notifiable, HasApiTokens;
     use SoftDeletes;
+    use LogsActivity;
+
+    /* ******* *** LOGS *** ******* */
+    protected static $logFillable = true;
+
+    protected static $logName = 'users';
+
+    protected static $logOnlyDirty = true;
 
     
     protected $fillable = [

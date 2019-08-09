@@ -5,11 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class EComercePedido extends Model
 {
     protected $table = 'e_comerce_pedidos';
     use SoftDeletes;
+    use LogsActivity;
+
+    /* ******* *** LOGS *** ******* */
+    protected static $logFillable = true;
+
+    protected static $logName = 'ecomerce_pedidos';
+
+    protected static $logOnlyDirty = true;
 
     protected $fillable = [
         'uuid', 'venda_id', 'cliente_id','metodo_correio', 'status',

@@ -6,11 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 use Uuid;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\User;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class FluxoFinanceiro extends Model
 {
     protected $table = 'fluxo_financeiros';
     use SoftDeletes;
+    use LogsActivity;
+
+    /* ******* *** LOGS *** ******* */
+    protected static $logFillable = true;
+
+    protected static $logName = 'fluxo_financeiro';
+
+    protected static $logOnlyDirty = true;
 
     protected $fillable = [
         'uuid', 
