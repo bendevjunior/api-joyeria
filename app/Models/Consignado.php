@@ -8,11 +8,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Uuid;
 
 use App\User;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Consignado extends Model
 {
     protected $table = 'consignados';
     use SoftDeletes;
+    use LogsActivity;
+
+    /* ******* *** LOGS *** ******* */
+    protected static $logFillable = true;
+
+    protected static $logName = 'consignado';
+
+    protected static $logOnlyDirty = true;
 
     protected $fillable = [
         'uuid', 'produto_id', 'cliente_id', 'consignado_id',

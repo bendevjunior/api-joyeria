@@ -6,10 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Fornecedor extends Model {
     protected $table = 'fornecedores';
     use SoftDeletes;
+    use LogsActivity;
+
+    /* ******* *** LOGS *** ******* */
+    protected static $logFillable = true;
+
+    protected static $logName = 'fornecedor';
+
+    protected static $logOnlyDirty = true;
 
     protected $fillable = [
         'uuid', 'endereco_id', 'nome', 'email', 'cpf_cnpj', 'nome_contato',

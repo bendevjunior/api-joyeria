@@ -6,11 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Endereco extends Model {
     
     protected $table = 'enderecos'; //table name
     use SoftDeletes;
+    use LogsActivity;
+
+    /* ******* *** LOGS *** ******* */
+    protected static $logFillable = true;
+
+    protected static $logName = 'endereco';
+
+    protected static $logOnlyDirty = true;
 
     protected $fillable = [
         'uuid', 'estado_id', 'cidade_id', 'rua', 'numero', 

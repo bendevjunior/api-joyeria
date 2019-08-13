@@ -6,11 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class ProductCategory extends Model
 {
     protected $table = 'product_categories';
     use SoftDeletes;
+    use LogsActivity;
+
+    /* ******* *** LOGS *** ******* */
+    protected static $logFillable = true;
+
+    protected static $logName = 'produto_categoria';
+
+    protected static $logOnlyDirty = true;
+
 
     protected $fillable = [
         'uuid', 'nome', 'img', 'status', 'categoria_pai_id'

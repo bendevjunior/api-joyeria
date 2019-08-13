@@ -8,11 +8,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Uuid;
 
 use App\User;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Venda extends Model
 {
     protected $table = 'vendas';
     use SoftDeletes;
+    use LogsActivity;
+
+    /* ******* *** LOGS *** ******* */
+    protected static $logFillable = true;
+
+    protected static $logName = 'vendas';
+
+    protected static $logOnlyDirty = true;
 
     protected $fillable = [
         'uuid', 'produto_id', 'cliente_id',
