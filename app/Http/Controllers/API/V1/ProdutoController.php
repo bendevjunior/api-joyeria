@@ -108,6 +108,10 @@ class ProdutoController extends Controller
         return response()->json(compact('produto'));
     }
 
+    public function show_unic_product(Request $request){
+        $produto = Produto::find_uuid($request->uuid);
+        return response()->json($produto);
+    }
 
     public function  mostrar(Request $request)
     {
