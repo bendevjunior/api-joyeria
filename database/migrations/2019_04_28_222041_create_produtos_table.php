@@ -29,6 +29,7 @@ class CreateProdutosTable extends Migration
             $table->decimal('caneta_rodio', 11, 2);
             $table->decimal('valor_banho', 11, 2)->nullable();
             $table->decimal('valor_venda', 11, 2)->nullable();
+            $table->decimal('valor_total_custo', 11, 2)->nullable();
             $table->decimal('peso', 11, 2)->nullable();
             $table->longText('primeira_imagem')->nullable();
             $table->smallInteger('status')->default(1)->comment('0-desativado | 1- ativado');

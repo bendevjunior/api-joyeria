@@ -175,7 +175,7 @@ class ProdutoController extends Controller
     public function colecao_store(Request $request)
     {
         $productCategory = ProdutoColecao::create($request->all());
-        return response()->json(compact('productCategory'));
+        return response()->json($productCategory);
     }
 
     public function colecao_update(Request $request)
