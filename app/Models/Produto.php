@@ -23,7 +23,7 @@ class Produto extends Model {
 
     protected $fillable = [
         'uuid', 'nome', 'descricao', 'codigo_de_barras', 'qnt',
-        'qnt_min', 'lote', 'valor_bruto', 'valor_banho',
+        'qnt_min', 'lote', 'valor_bruto', 'valor_banho','valor_total_custo',
         'valor_venda', 'peso', 'status', 'numero_codigo_de_barras',
         'categoria_id', 'colecao_id', 'primeira_imagem', 'caneta_rodio'
     ];
