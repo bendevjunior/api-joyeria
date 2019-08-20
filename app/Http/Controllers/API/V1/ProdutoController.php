@@ -37,14 +37,6 @@ class ProdutoController extends Controller
 
 
         $produto = $request["produto"];
-        if (is_null($request->produto['colecao_uuid']) == false) {
-            $colecao = ProdutoColecao::find_uuid($request->produto['colecao_uuid']);
-            $produto['colecao_id'] = $colecao->id;
-        }
-        if (is_null($request->produto['categoria_uuid']) == false) {
-            $categoria = ProductCategory::find_uuid($request->produto['categoria_uuid']);
-            $produto['categoria_id'] = $categoria->id;
-        }
         $produto = Produto::create($produto);
         $produto->numero_codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
         $produto->codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
@@ -222,24 +214,9 @@ class ProdutoController extends Controller
     public function update(Request $request)
     {
         
-       $produto = Produto::find_uuid($request->uuid);
-        
-        if(is_null($request->colecao_uuid) == false){
-            $colecao = ProdutoColecao::find_uuid($request->colecao_uuid);
-            $produto->colecao_id = $colecao->id;
-            $request->merge([
-                'colecao_id' => $colecao->id
-            ]);
-        }
-        
-        if(is_null($request->categoria_uuid) == false){
-            $categoria = ProductCategory::find_uuid($request->categoria_uuid);
-            $request->merge([
-                'categoria_id' => $categoria->id
-            ]);
-        }
+       $produto = Produto::find_uuid($request->produto['uuid']);
        
-        $produto->update($request->all());
+        $produto->update($request->produto);
         return response()->json($produto);
     }
 
