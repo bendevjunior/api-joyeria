@@ -179,6 +179,8 @@ class authController extends Controller {
         $userUpdateData = $request->cliente;
         if(!is_null($userUpdateData["password"])) {
             $userUpdateData["password"] = bcrypt($userUpdateData["password"]);
+        }else {
+            unset($userUpdateData['pasword']);
         }
         $user->update($userUpdateData);
       //  $endereco = $user->endereco;
