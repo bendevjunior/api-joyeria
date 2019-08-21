@@ -17,6 +17,8 @@ class FornecedorController extends Controller {
             'endereco_id'=>$endereco->id,
             'status' => $request->ativo
         ]);
+        $request->fornecedor['endereco_id'] = $endereco->id;
+        $request->fornecedor['status'] = 1;
         $fornecedor = Fornecedor::create($request->fornecedor);
         $fornecedor = Fornecedor::find($fornecedor->id);
         $endereco = $fornecedor->endereco;
