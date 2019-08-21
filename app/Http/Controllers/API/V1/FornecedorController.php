@@ -12,12 +12,12 @@ class FornecedorController extends Controller {
     
     public function store (Request $request) {
         //status = 0-desativado | 1-ativado        
-        $endereco = Endereco::create($request->all());
+        $endereco = Endereco::create($request->endereco);
         $request->merge([
             'endereco_id'=>$endereco->id,
             'status' => $request->ativo
         ]);
-        $fornecedor = Fornecedor::create($request->all());
+        $fornecedor = Fornecedor::create($request->forncedor);
         $fornecedor = Fornecedor::find($fornecedor->id);
         $endereco = $fornecedor->endereco;
         $endereco_cidade = $fornecedor->endereco->cidade->nome;
@@ -26,7 +26,7 @@ class FornecedorController extends Controller {
         return response()->json(compact('fornecedor')); 
     }
 
-    public function show(Request $request) {
+    public function show(Request $request) { 
         //se passar uuid retorna apenas o fornecedor especifico
         if($request->uuid == null) {
             $fornecedor = Fornecedor::orderBy('nome', 'asc')->get();
@@ -41,19 +41,11 @@ class FornecedorController extends Controller {
 
     public function update (Request $request, $uuid) {
         //status = 0-desativado | 1-ativado
-        $fornecedor = Fornecedor::find_uuid($uuid);  
+        $fornecedor = Fornecedor::find_uuid($request->forncedor['uuid']);  
         $endereco = Endereco::find($fornecedor->endereco_id);
         
-        $endereco->update($request->all());
-        $request->merge([
-            'endereco_id'=>$endereco->id,
-            'status' => $request->ativo
-        ]);
-        $fornecedor->update($request->all());
-        $fornecedor = Fornecedor::find($fornecedor->id);
-        $endereco = $fornecedor->endereco;
-        $endereco_cidade = $fornecedor->endereco->cidade->nome;
-        $endereco_estado = $fornecedor->endereco->estado->nome;
+        $endereco->update($request->endereco);
+        $fornecedor->update($request->fornecedor);
 
         return response()->json(compact('fornecedor')); 
     }
