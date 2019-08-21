@@ -17,7 +17,7 @@ class FornecedorController extends Controller {
             'endereco_id'=>$endereco->id,
             'status' => $request->ativo
         ]);
-        $fornecedor = Fornecedor::create($request->forncedor);
+        $fornecedor = Fornecedor::create($request->fornecedor);
         $fornecedor = Fornecedor::find($fornecedor->id);
         $endereco = $fornecedor->endereco;
         $endereco_cidade = $fornecedor->endereco->cidade->nome;
@@ -41,7 +41,7 @@ class FornecedorController extends Controller {
 
     public function update (Request $request, $uuid) {
         //status = 0-desativado | 1-ativado
-        $fornecedor = Fornecedor::find_uuid($request->forncedor['uuid']);  
+        $fornecedor = Fornecedor::find_uuid($request->fornecedor['uuid']);  
         $endereco = Endereco::find($fornecedor->endereco_id);
         
         $endereco->update($request->endereco);
