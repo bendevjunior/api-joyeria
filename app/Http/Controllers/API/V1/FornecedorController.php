@@ -14,16 +14,12 @@ class FornecedorController extends Controller {
         //status = 0-desativado | 1-ativado        
         $endereco = Endereco::create($request->endereco);
         $request->merge([
-            'endereco_id'=>$endereco->id,
-            'status' => $request->ativo
+            'endereco_id' => $endereco->id,
+            'status' => 1
         ]);
         $fornecedor = Fornecedor::create($request->fornecedor);
-        $fornecedor = Fornecedor::find($fornecedor->id);
-        $endereco = $fornecedor->endereco;
-        $endereco_cidade = $fornecedor->endereco->cidade->nome;
-        $endereco_estado = $fornecedor->endereco->estado->nome;
 
-        return response()->json(compact('fornecedor')); 
+        return response()->json($fornecedor); 
     }
 
     public function show(Request $request) { 
