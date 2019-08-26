@@ -17,7 +17,7 @@ class FornecedorController extends Controller {
             'endereco_id' => $endereco->id,
             'status' => 1
         ]);
-        $fornecedor = Fornecedor::create($request->fornecedor);
+        $fornecedor = Fornecedor::create($request->all());
 
         return response()->json($fornecedor); 
     }
