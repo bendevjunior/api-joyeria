@@ -179,12 +179,12 @@ class authController extends Controller {
         $userUpdateData = $request->cliente;
         if(isset($userUpdateData["password"])  && !is_null($userUpdateData["password"])) {
             $userUpdateData["password"] = bcrypt($userUpdateData["password"]);
-        }else {
-            unset($userUpdateData['pasword']);
+        } else {
+            unset($userUpdateData['password']);
         }
         $user->update($userUpdateData);
-      //  $endereco = $user->endereco;
-       // $endereco->update($request->endereco);
+        $endereco = $user->endereco;
+        $endereco->update($request->endereco);
         return response()->json($user);
     }
 
