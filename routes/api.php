@@ -11,7 +11,7 @@ Route::get('endereco/busca-estado/', "API\V1\\EnderecoController@busca_estado");
 Route::get('endereco/busca-cidade/', "API\V1\\EnderecoController@busca_cidade");
 Route::get('colecao-com-produto/list', "API\V1\ProdutoController@colecao_com_produto_list");
 
-Route::group(['middleware' => 'cors'], function () {
+Route::group(['middleware' => 'cors','prefix' => 'produtos'], function () {
     Route::get('mais-vendidos', "API\V1\ProdutoController@mais_vendidos");
     Route::get('mais-recentes', "API\V1\ProdutoController@mais_recentes");
 });
