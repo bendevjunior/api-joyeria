@@ -33,6 +33,24 @@ class ProdutoController extends Controller
         $produto->update();
         return response()->json(['success' => 'produto desabilitado com sucesso']);
     }
+
+    public static function base64_to_image($b64, $path) {
+        $output = realpath(dirname('../')) . $path;
+            
+        list($type, $data) = explode(';', $b64);
+        list(, $data) = explode(',', $b64);
+        $data = base64_decode($data);
+        file_put_contents($output, $data);
+     
+        return [
+            'success' => file_exists($output),
+            'paths' => [
+                'relative' => $path,
+                'absolute' => $output
+            ]
+        ];
+    }
+
     public function store(Request $request){
 
 
@@ -40,6 +58,7 @@ class ProdutoController extends Controller
         $produto = Produto::create($produto);
         $produto->numero_codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
         $produto->codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
+        $produto->primeira_imagem = base64_to_image($produto->primeira_imagem,'imagens');
         $produto->save();
         $produto = Produto::find($produto->id);
         if ($request["fotos"] != null) {
@@ -115,6 +134,7 @@ class ProdutoController extends Controller
         }
         return response()->json(compact('produto', 'ultima_compra'));
     }
+    
 
     public function store_foto(Request $request)
     {
