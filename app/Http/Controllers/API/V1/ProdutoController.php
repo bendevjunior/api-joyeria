@@ -58,7 +58,6 @@ class ProdutoController extends Controller
         $produto = Produto::create($produto);
         $produto->numero_codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
         $produto->codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
-        $produto->primeira_imagem = base64_to_image($produto->primeira_imagem,'imagens');
         $produto->save();
         $produto = Produto::find($produto->id);
         if ($request["fotos"] != null) {
