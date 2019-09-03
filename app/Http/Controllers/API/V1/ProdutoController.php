@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Str;
 
 use App\Models\Produto;
 use App\Models\ProdutoFoto;
@@ -65,6 +66,31 @@ class ProdutoController extends Controller
                 ProdutoFoto::create([
                     'produto_id' => $produto->id,
                     'url' => $foto['foto']
+                ]);
+            }
+
+            $categoria = $produto->categoria;
+            $colecao = $produto->colecao;
+            return response()->json(compact('produto'));
+        }
+    }
+    
+    public function storeComImagem(Request $request){
+
+
+        $produto = $request["produto"];
+        $produto = Produto::create($produto);
+        $produto->numero_codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
+        $produto->codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
+        $produto->save();
+        $produto = Produto::find($produto->id);
+        if ($request["fotos"] != null) {
+            foreach ($request["fotos"] as $foto) {
+                $img_name = (string) Str::uuid() . '.png';
+                $img = $this->base64ToImage($request['foto'], 'img/'.$img_name);
+                ProdutoFoto::create([
+                    'produto_id' => $produto->id,
+                    'url' => 'img/'.$img_name
                 ]);
             }
 
@@ -144,6 +170,18 @@ class ProdutoController extends Controller
         ]);
         return response()->json(compact('produto'));
     }
+    
+    public function store_foto_img(Request $request)
+    {
+        $img = 'tmp/' . (string) Str::uuid() . '.png';
+        $this->base64ToImage($request->foto, $img);
+        $produto = Produto::find($request->id);
+        ProdutoFoto::create([
+            'produto_id' => $produto->id,
+            'url' => $img
+        ]);
+        return response()->json(compact('produto'));
+    }
 
     public function destroy_foto(Request $request)
     {
@@ -185,6 +223,15 @@ class ProdutoController extends Controller
 
     public function colecao_store(Request $request)
     {
+        $productCategory = ProdutoColecao::create($request->all());
+        return response()->json($productCategory);
+    }
+
+    public function colecao_store_com_img(Request $request)
+    {
+        $img = 'img/' . (string) Str::uuid() . '.png';
+        $this->base64ToImage($request->img, $img);
+        $request->merge(['img'=>$img]);
         $productCategory = ProdutoColecao::create($request->all());
         return response()->json($productCategory);
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Slider;
+use Str;
 
 class SliderController extends Controller
 {
@@ -32,8 +33,11 @@ class SliderController extends Controller
      */
     public function store(Request $request)
     {
-       $slider = Slider::create($request->all());
-       return response()->json(compact('slider'));
+        $img = 'img/' . (string) Str::uuid() . '.png';
+        $this->base64ToImage($request->img, $img);
+        $request->merge(['img'=>$img]);
+        $slider = Slider::create($request->all());
+        return response()->json(compact('slider'));
     }
 
     /**
@@ -57,6 +61,16 @@ class SliderController extends Controller
      */
     public function update(Request $request)
     {
+        $slider = Slider::find($request->id);
+        $slider->update($request->all());
+        return response()->json(compact('slider'));
+    }
+
+    public function updateImage(Request $request)
+    {
+        $img = 'img/' . (string) Str::uuid() . '.png';
+        $this->base64ToImage($request->img, $img);
+        $request->merge(['img'=>$img]);
         $slider = Slider::find($request->id);
         $slider->update($request->all());
         return response()->json(compact('slider'));
