@@ -60,7 +60,7 @@ Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/compra'], f
 Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/categoria'], function () {
     Route::post('store', "API\V1\ProdutoController@categoria_store");
     Route::put('update', "API\V1\ProdutoController@categoria_update");
-    
+
 });
 
 Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/colecao'], function () {
@@ -78,7 +78,7 @@ Route::group(['middleware' => 'auth:api','cors','prefix' => 'slider'], function 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'API\V1\authController@login');
     Route::post('register', 'API\V1\authController@register');
-  
+
     Route::group(['middleware' => 'auth:api'], function() {
         Route::get('logout', 'API\V1\authController@logout');
         Route::get('user', 'API\V1\authController@user');
@@ -87,8 +87,10 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('ativar-conta', "API\V1\authController@ativar_conta");
         Route::get('show/user/{uuid}', "API\V1\authController@show_user");
         Route::delete('destroy/{uuid}', "API\V1\authController@destroy");
+        Route::get('list_docs/{user_uuid}', "API\V1\authController@get_documentos");
+        Route::get('list_user-para-aprovar-doc', "API\V1\authController@get_user_para_aprovar_doc");
     });
-   
+
 });
 
 Route::group(['middleware' => 'auth:api','cors','prefix' => 'dashboard'], function () {

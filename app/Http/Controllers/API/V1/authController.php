@@ -8,15 +8,15 @@ use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegisterMail;
-
-
+use App\Models\Documento;
 use App\User;
 use App\Models\Endereco;
 use App\Models\Venda;
 use App\Models\FluxoFinanceiro;
+use Str;
 
 class authController extends Controller {
-	
+
 
     /**
      * Register .
@@ -30,7 +30,7 @@ class authController extends Controller {
         if(!is_null(auth()->user())) {
             $request->merge(['email_verified_at' => Carbon::now()->format('Y-m-d')]);
         }
-        
+
         if(User::where('email', $request->email)->get()->count() > 0) {
             return response()->json(['error' => 'Email ja utilizado']);
         }
@@ -43,7 +43,7 @@ class authController extends Controller {
             $password = $request->password;
         }
         $request->merge(['password'=> bcrypt($password)]);
-        
+
         if($request->ativo == 1) {
             $request->merge(['status'=>1]);
         }
@@ -57,9 +57,12 @@ class authController extends Controller {
         $endereco_cidade = $user->endereco->cidade->nome;
         $endereco_estado = $user->endereco->estado->nome;
 
-
+        //upload de doc
+        if($user->role == 2) {
+            $this->upload_documentos($user->id, $request->documentos);
+        }
         return response()->json(compact('user'));
-        
+
     }
 
     public function ativar_conta (Request $request) {
@@ -98,8 +101,21 @@ class authController extends Controller {
         return response()->json(compact('user'));
     }
 
-    
-  
+    //lista de documentos
+    public function get_documentos($user_uuid)
+    {
+        $user = User::find_uuid($user_uuid);
+        $documentos = Documento::where('user_id', $user->id)->get();
+        return response()->json(compact('documentos'));
+    }
+
+    //lista de usuarios revendedores que precisam ser aprovados
+    public function get_user_para_aprovar_doc()
+    {
+        $user = User::where('role',2)->where('status', 0)->get();
+        return response()->json(compact('user'));
+    }
+
     /**
      * Login user and create token
      *
@@ -112,8 +128,8 @@ class authController extends Controller {
      */
     public function login(Request $request)
     {
-        
-        
+
+
         $credentials = request(['email', 'password']);
         if(!Auth::attempt($credentials))
             return response()->json([
@@ -134,7 +150,7 @@ class authController extends Controller {
             )->toDateTimeString()
         ]);
     }
-  
+
     /**
      * Logout user (Revoke the token)
      *
@@ -147,7 +163,7 @@ class authController extends Controller {
             'message' => 'Successfully logged out'
         ]);
     }
-  
+
     /**
      * Get the authenticated User
      *
@@ -173,7 +189,7 @@ class authController extends Controller {
     }
 
     //update user
-    public function user_update(Request $request) 
+    public function user_update(Request $request)
     {
         $user = User::find_uuid($request->cliente["uuid"]);
         $userUpdateData = $request->cliente;
@@ -206,6 +222,20 @@ class authController extends Controller {
         $user->delete();
 
         return response()->json(['cliente deletado ocm sucesso']);
+    }
+
+    private function upload_documentos($user_id, $arr_documentos)
+    {
+        foreach($arr_documentos as $documento) {
+
+            $img_name = (string) Str::uuid() . '.png';
+            $img = $this->base64ToImage($documento['documento'], 'docs/'.$img_name);
+            Documento::create([
+                'user_id' => $user_id,
+                'documento' => 'docs/'.$img_name
+            ]);
+
+        }
     }
 
 
