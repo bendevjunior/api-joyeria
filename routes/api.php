@@ -10,7 +10,7 @@ Route::get('img/path/{img}' , function() {
     return Storage::get('img/' + $img);
 });
 
-Route::get('img/pathToFile' , function() {
+Route::get('img/{pathToFile}' , function() {
     return response()->download($pathToFile);
 });
 
