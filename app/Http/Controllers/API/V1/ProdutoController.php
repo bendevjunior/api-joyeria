@@ -35,22 +35,6 @@ class ProdutoController extends Controller
         return response()->json(['success' => 'produto desabilitado com sucesso']);
     }
 
-    public static function base64_to_image($b64, $path) {
-        $output = realpath(dirname('../')) . $path;
-            
-        list($type, $data) = explode(';', $b64);
-        list(, $data) = explode(',', $b64);
-        $data = base64_decode($data);
-        file_put_contents($output, $data);
-     
-        return [
-            'success' => file_exists($output),
-            'paths' => [
-                'relative' => $path,
-                'absolute' => $output
-            ]
-        ];
-    }
 
     public function store(Request $request){
 
@@ -80,7 +64,7 @@ class ProdutoController extends Controller
         $produto = $request["produto"];
        // $produto->codigo_de_barras = 11111;// str_pad($i, 13, '0', STR_PAD_LEFT);
         $img_name = (string) Str::uuid() . '.png';
-        dd($request["produto"]);exit;
+        $produto->primeira_imagem = $this->base64ToImage($request['produto']['primiera_imagem'], 'img/'.$img_name);
         $produto = Produto::create($produto);
         if ($request["fotos"] != null) {
             foreach ($request["fotos"] as $foto) {
@@ -88,7 +72,7 @@ class ProdutoController extends Controller
                 $img = $this->base64ToImage($request['foto'], 'img/'.$img_name);
                 ProdutoFoto::create([
                     'produto_id' => $produto->id,
-                    'url' => 'img/'.$img_name
+                    'url' => $img
                 ]);
             }
 
