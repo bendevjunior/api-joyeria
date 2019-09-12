@@ -77,8 +77,7 @@ class ProdutoController extends Controller
     public function storeComImagem(Request $request){
 
 
-        $produto = $request["produto"];
-        $produto = Produto::create($produto);
+        $produto = Produto::create($request["produto"]);
         $produto->numero_codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
         $produto->codigo_de_barras = str_pad($produto->id, 13, '0', STR_PAD_LEFT);
         $img_name = (string) Str::uuid() . '.png';
