@@ -80,7 +80,7 @@ class ProdutoController extends Controller
         $produto = $request["produto"];
        // $produto->codigo_de_barras = 11111;// str_pad($i, 13, '0', STR_PAD_LEFT);
         $img_name = (string) Str::uuid() . '.png';
-        dd($this->base64ToImage($request["produto"]->primeira_imagem, 'img/'.$img_name));exit;
+        dd($request["produto"]);exit;
         $produto = Produto::create($produto);
         if ($request["fotos"] != null) {
             foreach ($request["fotos"] as $foto) {
