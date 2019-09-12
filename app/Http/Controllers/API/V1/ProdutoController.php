@@ -65,7 +65,8 @@ class ProdutoController extends Controller
        // $produto->codigo_de_barras = 11111;// str_pad($i, 13, '0', STR_PAD_LEFT);
        
         $img_name = (string) Str::uuid() . '.png';
-        $produto['primeira_imagem'] = $this->base64ToImage($produto['primeira_imagem'], 'img/'.$img_name);
+        $this->base64ToImage($produto['primeira_imagem'], 'img/'.$img_name);
+        $produto['primeira_imagem'] = public_path() . '/img' .'/' .$img_name´;
         $produto = Produto::create($produto);
         if ($request["fotos"] != null) {
             foreach ($request["fotos"] as $foto) {
