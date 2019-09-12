@@ -63,7 +63,7 @@ class ProdutoController extends Controller
 
         $produto = $request["produto"];
        // $produto->codigo_de_barras = 11111;// str_pad($i, 13, '0', STR_PAD_LEFT);
-       return response()->json($produto);
+       return response()->json($produto['primeira_imagem']);
         $img_name = (string) Str::uuid() . '.png';
         $produto->primeira_imagem = $this->base64ToImage($request['produto']['primiera_imagem'], 'img/'.$img_name);
         $produto = Produto::create($produto);
