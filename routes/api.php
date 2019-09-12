@@ -1,11 +1,13 @@
 <?php
 
+use Faker\Provider\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
-Route::get('/img', function() {
-    echo move_uploaded_file(Storage::url('img/1aec2a69-68d3-4537-b454-0fe628d034cc.png') , 'public');
+Route::get('storage/{filename}', function ($filename)
+{
+    return Image::make(storage_path('public/' . $filename))->response();
 });
 
 Route::get('produto/{nome}', "API\\V1\\ProdutoController@mostrar");
