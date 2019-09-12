@@ -4,6 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
+Route::get('/img', function() {
+    echo Storage::url('img/1aec2a69-68d3-4537-b454-0fe628d034cc.png');
+});
+
 Route::get('produto/{nome}', "API\\V1\\ProdutoController@mostrar");
 Route::get('produtos/todos', "API\\V1\\ProdutoController@index_produto");
 Route::get('produto/categoria/show/{uuid}', "API\V1\ProdutoController@categoria_produto");
