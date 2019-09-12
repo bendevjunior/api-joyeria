@@ -22,7 +22,7 @@ class Controller extends BaseController
         //fclose($file);
         $data = base64_decode($data[1]);
 
-        Storage::put($output_file, $data);
+        Storage::disk('public')->put($output_file, $data);
 
     
 

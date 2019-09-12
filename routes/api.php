@@ -6,14 +6,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 
-Route::get('img/path/{img}' , function() {
-    return Storage::get('img/' + $img);
-});
-
-Route::get('img/{pathToFile}' , function() {
-    return response()->download($pathToFile);
-});
-
 Route::get('produto/{nome}', "API\\V1\\ProdutoController@mostrar");
 Route::get('produtos/todos', "API\\V1\\ProdutoController@index_produto");
 Route::get('produto/categoria/show/{uuid}', "API\V1\ProdutoController@categoria_produto");
