@@ -26,6 +26,6 @@ class Controller extends BaseController
 
     
 
-        return storage_path($output_file);
+        return $output_file;
     }
 }
