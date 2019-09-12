@@ -24,7 +24,7 @@ class Controller extends BaseController
 
         Storage::put($output_file, $data);
 
-        
+    
 
         return storage_path($output_file);
     }

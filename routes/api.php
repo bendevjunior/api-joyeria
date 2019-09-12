@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 Route::get('/img', function() {
-    echo Storage::url('img/1aec2a69-68d3-4537-b454-0fe628d034cc.png');
+    echo move_uploaded_file(Storage::url('img/1aec2a69-68d3-4537-b454-0fe628d034cc.png') , 'public');
 });
 
 Route::get('produto/{nome}', "API\\V1\\ProdutoController@mostrar");
