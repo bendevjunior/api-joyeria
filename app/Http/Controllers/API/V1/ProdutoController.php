@@ -71,7 +71,8 @@ class ProdutoController extends Controller
         if ($request["fotos"] != null) {
             foreach ($request["fotos"] as $foto) {
                 $img_name = (string) Str::uuid() . '.png';
-                $img = $this->base64ToImage($request['foto'], 'img/'.$img_name);
+                $this->base64ToImage($request['foto'], 'img/'.$img_name);
+                $img = env('APP_URL') . '/img' .'/' .$img_name;
                 ProdutoFoto::create([
                     'produto_id' => $produto->id,
                     'url' => $img
