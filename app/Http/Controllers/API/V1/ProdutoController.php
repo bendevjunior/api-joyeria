@@ -271,6 +271,13 @@ class ProdutoController extends Controller
         return response()->json($produto);
     }
 
+    public function delete(Request $r) {
+        $produto = Produto::find_uuid($r->uuid);
+        $produto->status = 0 ;
+        $produto->update();
+        return response()->json($produto);
+    }
+
     public function mais_vendidos()
     {
         $retorno = [];

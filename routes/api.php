@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth:api', 'cors', 'prefix' => 'produtos'], funct
     Route::get('show/administrativo', 'API\V1\ProdutoController@show_administrativo');
     Route::get('show/produto/{uuid}', 'API\V1\ProdutoController@show_unic_product');
     Route::put('update', "API\V1\ProdutoController@update");
+    Route::put('delete', "API\V1\ProdutoController@delete");
 });
 
 Route::group(['middleware' => 'auth:api','cors','prefix' => 'produto/compra'], function () {
