@@ -282,7 +282,7 @@ class ProdutoController extends Controller
     {
         $retorno = [];
         foreach(Produto::all() as $p) {
-            $produto_venda = ProdutoVenda::where('produto_id', $p->id)->get();
+            $produto_venda = ProdutoVenda::where('status', 1)->where('produto_id', $p->id)->get();
             if($produto_venda) {
                 $retorno[] = [
                     'nome' => $p->nome,
@@ -297,7 +297,7 @@ class ProdutoController extends Controller
 
     public function mais_recentes()
     {
-        $produtos = Produto::orderBy('id', 'desc')->limit(4)->get();
+        $produtos = Produto::where('status', 1)->orderBy('id', 'desc')->limit(4)->get();
         return response()->json($produtos);
     }
 }
